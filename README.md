@@ -91,7 +91,8 @@
  * 检查文件的后缀
  * 默认`jsp`
  * 参数：
- * ```xml
+
+ ```xml
    <suffixs>
 		<param>html</param>
 		<param>jsp</param>
@@ -101,19 +102,19 @@
 4. `baseJsDomin`
  * 基本js域名,在使用`<script src="http://script.iqarr.com/js/jquery/jquery/1.8.3/jquery.js"></script>`这种方式需要配置
  * 参数:
- * ```xml
+```xml
    <baseJsDomin>
 		<param>http://script.iqarr.com</param>
 	</baseJsDomin>
- ```
+```
 5. `baseCssDomin`
  * 基本css域名,在使用`<link rel="stylesheet" type="text/css" href="http://style.iqarr.com/css/public.css?" />`这种方式需要配置
  * 参数:
- * ```xml
+```xml
    <baseCssDomin>
 		<param>http://style.iqarr.com</param>
 	</baseCssDomin>
- ```
+```
 6. `globaJslPrefixPath`
  * 全局js path路径
 7. `globaCsslPrefixPath`
@@ -167,25 +168,25 @@
 18. `excludesJs`
 
 	* 排除js文件(只支持全路径匹配)
-	* ```xml
+```xml
    <excludesJs>
 		<param>js/dome.js</param>
 	</excludesJs>
- ```
+```
 
 19. `excludesCss`
 
 	* 排除css文件(只支持全路径匹配)
-	* ```xml
+```xml
    <excludesCss>
 		<param>css/dome.css</param>
 	</excludesCss>
- ```
+```
 
 20. `yuiConfig`
 
 	* 配置压缩选项
-	* ```xml
+```xml
 	<yuiConfig>
 		  <!-- 禁止优化(默认false) -->
 		  <disableOptimizations></disableOptimizations>
@@ -196,7 +197,7 @@
 		<!-- 显示详细信息(默认false) -->
 		<verbose></verbose>
 	</yuiConfig>
-	```
+```
 
 21. `braekFileNameSuffix`
 
