@@ -6,7 +6,7 @@
 
 ### 简介
 
-`jcv-maven-plugin`是js css版本号工具
+`jcv-maven-plugin`是一个自动为网页添加js.css的版本号工具，支持多种方法版本号添加，采集文件的md5值进行文件版本号修订，这个可以在每次更新的时候只修改以修改文件的版本号，防止全部js缓存失效，目前该插件以发布到mvn中央仓库,可以坐标引用使用.
 
 # Quick Start
 
@@ -16,7 +16,7 @@
 			<plugin>
 				<groupId>com.iqarr.maven.plugin</groupId>
 				<artifactId>jcv-maven-plugin</artifactId>
-				<version>0.0.X</version>
+				<version>0.0.3</version>
 				<executions>
 				   <execution>
                     <id>process</id>
