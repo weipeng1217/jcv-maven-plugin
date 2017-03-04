@@ -76,7 +76,12 @@
          </configuration>
        </plugin>
 ```
+### 打包
 
+```
+	mvn package
+# 注意该插件不会在eclipse中生效，在package后才会生效
+```
 ###  参数说明：
 
 1. `outputDirectory`
