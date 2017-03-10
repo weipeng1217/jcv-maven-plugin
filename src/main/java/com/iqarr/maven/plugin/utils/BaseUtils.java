@@ -2,6 +2,9 @@ package com.iqarr.maven.plugin.utils;
 
 import java.util.List;
 
+import com.iqarr.maven.plugin.domain.JCVFileInfo;
+import com.iqarr.maven.plugin.domain.JCVMethodEnum;
+
 /**
  * @Package
  *          com.iqarr.maven.plugin.utils
@@ -202,6 +205,134 @@ public class BaseUtils {
         }
         
         
+    }
+    
+    /**
+     * 
+     * 替换字符串中的所有单个字符
+     * @param str
+     * @param hisStr
+     * @param replacement
+     * @return
+     */
+    public static String replaceAll(final String str,final char hisStr,final char replacement){
+        char[] sub = str.toCharArray();
+    
+        StringBuilder sb=new StringBuilder();
+        int size=sub.length;
+        for(int i=0;i<size;i++){
+           if(sub[i]==hisStr){
+               sb.append(replacement);
+           }else {
+               sb.append(sub[i]);
+           }
+        }
+        return sb.toString();
+    }
+    
+    /**
+     * 
+     * <p>替换文件路径为linux 路径</p>
+     * @param path
+     * @return
+     */
+    public static String replaceLinuxSystemLine(final String path){
+        if(FileUtils.getSystemFileSeparatorIslinux()){
+            //linux
+            return path;
+        }else {
+            if(path==null || "".equals(path)){
+                return path;
+            }
+            //windows
+            return replaceAll(path,'\\','/');
+        }
+      
+    }
+    /**
+     * 
+     * 转换为当前系统路径
+     * @param path
+     * @return
+     */
+    public static String replacecurrentSystemLine(final String path){
+        if(FileUtils.getSystemFileSeparatorIslinux()){
+            //linux
+            return replaceAll(path,'\\','/'); 
+        }else {
+            //windows
+            return replaceAll(path,'/','\\'); 
+        }
+      
+    }
+    /**
+     * 
+     * 获取文件输出路径
+     * @param jcv
+     * @param isCompression 是否压缩
+     * @param meth 处理方法
+     * @return
+     */
+    public static String getJSSCSSOutPath(final JCVFileInfo jcv,final boolean isCompression, final JCVMethodEnum meth,final String outDir ,final String ... userCompressionSuffix ) {
+        
+        StringBuilder tempPath=new StringBuilder();
+        if(outDir!=null ){
+            tempPath.append(outDir);
+        }
+        if (!outDir.endsWith(FileUtils.getSystemFileSeparator())) {
+            tempPath.append(FileUtils.getSystemFileSeparator());
+        }
+        if (meth == JCVMethodEnum.DEFAULTS_UNUSED) {
+            if (outDir.endsWith(FileUtils.getSystemFileSeparator())) {
+                tempPath.append(replacecurrentSystemLine(jcv.getRelativelyFilePath()));
+            } else {
+                tempPath.append(FileUtils.getSystemFileSeparator() + replacecurrentSystemLine(jcv.getRelativelyFilePath()));
+                
+            }
+            return tempPath.toString();
+        }
+       
+        if (JCVFileInfo.CSS.equals(jcv.getFileType()) || JCVFileInfo.JS.equals(jcv.getFileType())) {
+            
+            if (meth == JCVMethodEnum.MD5FileName_METHOD ||  isCompression) {
+                tempPath .append(replacecurrentSystemLine(jcv.getRelativelyFilePath()));
+                int lastIndexOf = tempPath.lastIndexOf(FileUtils.getSystemFileSeparator());
+                tempPath = tempPath.delete(lastIndexOf, tempPath.length()); //substring(0, lastIndexOf);
+                
+                tempPath.append(FileUtils.getSystemFileSeparator() +jcv.getFinalFileName()); //jcv.getFileVersion() + "." + userCompressionSuffix + "." + jcv.getFileType();
+            } else {
+                
+                String fileName="";
+                int indexSp = jcv.getFileName().lastIndexOf(".");
+                if (indexSp > 0) {
+                    fileName = jcv.getFileName().substring(0, indexSp);
+                } else {
+                    fileName = jcv.getFileName();
+                }
+                if(isCompression){
+                    tempPath.append(fileName + "." +userCompressionSuffix[0]+"."+ jcv.getFileType() );
+                }else {
+                    tempPath.append(fileName + "." + jcv.getFileType() );// fielName + "." + userCompressionSuffix + "." + jcv.getFileType();
+                }
+            }
+             
+        } 
+        
+        return tempPath.toString();
+    }
+    
+    
+    /**
+     * 
+     * 获取文件的目录地址
+     * @param path
+     * @return
+     */
+    public static String getFilePathDir(String path){
+        int lastIndexOf = path.lastIndexOf(FileUtils.getSystemFileSeparator());
+        path = path.substring(0, lastIndexOf);
+        
+        return path;
     }
     
     

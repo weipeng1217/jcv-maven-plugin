@@ -353,6 +353,7 @@ public class FileUtils {
         return System.getProperty("line.separator");
     }
     
+
     /**
      * 
      * 清除多余换行

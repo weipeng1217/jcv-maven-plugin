@@ -25,6 +25,7 @@ import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 import com.iqarr.maven.plugin.domain.PageInfo;
 import com.iqarr.maven.plugin.domain.YUIConfig;
 import com.iqarr.maven.plugin.exception.YUIException;
+import com.iqarr.maven.plugin.utils.BaseUtils;
 import com.iqarr.maven.plugin.utils.FileUtils;
 import com.yahoo.platform.yui.compressor.CssCompressor;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
@@ -266,34 +267,14 @@ public class JCVFactory {
                         log.debug("process file:" + jcv.getFileName()+"   index:"+i);
                     }
                     
-                    String tempPath = outDir;
-                    if (tempPath.endsWith(FileUtils.getSystemFileSeparator())) {
-                        tempPath += jcv.getRelativelyFilePath();
-                    } else {
-                        tempPath += FileUtils.getSystemFileSeparator() + jcv.getRelativelyFilePath();
-                        
-                    }
-                    int lastIndexOf = tempPath.lastIndexOf(FileUtils.getSystemFileSeparator());
-                    tempPath = tempPath.substring(0, lastIndexOf);
-                    
-                    File f = new File(tempPath);
-                    if (!f.exists()) {
-                        f.mkdirs();
-                    }
-                    
                     if (JCVFileInfo.CSS.equals(jcv.getFileType())) {
                         if (compressionCss==true) {
-                            if (cssEn == JCVMethodEnum.MD5FileName_METHOD) {
-                                tempPath += FileUtils.getSystemFileSeparator() +jcv.getFinalFileName();; //jcv.getFileVersion() + "." + userCompressionSuffix + "." + jcv.getFileType();
-                            } else {
-                                int indexSp = jcv.getFileName().lastIndexOf(".");
-                                if (indexSp > 0) {
-                                    fileName = jcv.getFileName().substring(0, indexSp);
-                                } else {
-                                    fileName = jcv.getFileName();
-                                }
-                                tempPath += FileUtils.getSystemFileSeparator() +jcv.getFinalFileName();// fielName + "." + userCompressionSuffix + "." + jcv.getFileType();
-                            }
+                           
+                           String tempPath= BaseUtils.getJSSCSSOutPath(jcv, true,cssEn, outDir);
+                           File f = new File( BaseUtils.getFilePathDir(tempPath));
+                           if (!f.exists()) {
+                               f.mkdirs();
+                           }
                              
                             // YUI
                             in = new InputStreamReader(new FileInputStream(jcv.getFile()));
@@ -310,18 +291,12 @@ public class JCVFactory {
                     } else if (JCVFileInfo.JS.equals(jcv.getFileType())) {
                             
                              if (compressionJs == true) {
-                                    if (jsEn == JCVMethodEnum.MD5FileName_METHOD) {
-                                        tempPath += FileUtils.getSystemFileSeparator() +jcv.getFinalFileName();// jcv.getFileVersion() + "." + userCompressionSuffix + "." + jcv.getFileType();
-                                    } else {
-                                        int indexSp = jcv.getFileName().lastIndexOf(".");
-                                        if (indexSp > 0) {
-                                            fileName = jcv.getFileName().substring(0, indexSp);
-                                        } else {
-                                            fileName = jcv.getFileName();
-                                        }
-                                        tempPath += FileUtils.getSystemFileSeparator() +jcv.getFinalFileName(); //fielName + "." + userCompressionSuffix + "." + jcv.getFileType();
-                                    }
-                                    
+                                  
+                                 String tempPath= BaseUtils.getJSSCSSOutPath(jcv, true,jsEn, outDir);
+                                 File f = new File( BaseUtils.getFilePathDir(tempPath));
+                                 if (!f.exists()) {
+                                     f.mkdirs();
+                                 }
                                     // yui start
                                     in = new InputStreamReader(new FileInputStream(jcv.getFile()));
                                     JavaScriptCompressor compressor = new JavaScriptCompressor(in, new YUIException(log, jcv.getFileName()));
@@ -893,6 +868,8 @@ public class JCVFactory {
         return "";
         
     }
+    
+    
     
     /**
      * 获取

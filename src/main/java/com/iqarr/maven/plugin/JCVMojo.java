@@ -20,6 +20,7 @@ import com.iqarr.maven.plugin.domain.JCVFileInfo;
 import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 import com.iqarr.maven.plugin.domain.PageInfo;
 import com.iqarr.maven.plugin.domain.YUIConfig;
+import com.iqarr.maven.plugin.utils.BaseUtils;
 import com.iqarr.maven.plugin.utils.FileUtils;
 import com.iqarr.maven.plugin.utils.Md5Utils;
 
@@ -176,6 +177,9 @@ public class JCVMojo extends AbstractMojo {
         
        
         String webRoot=webappDirectory.getPath();
+        if(!webRoot.endsWith(FileUtils.getSystemLineSpearator())){
+            webRoot+=FileUtils.getSystemFileSeparator();
+        }
         
         timeStart=new Date().getTime();
        
@@ -196,12 +200,13 @@ public class JCVMojo extends AbstractMojo {
                         yuiConfig,braekFileNameSuffix);
         List<PageInfo> pages=new ArrayList<PageInfo>();
         getAllProcessFile(pages,webRoot,suffixs);
+      //webRootName
+        String out= outputDirectory.getPath()+FileUtils.getSystemFileSeparator()+webRootName;
         for(int i=0;i<pages.size();i++){
-            //webRootName
-           String out= outputDirectory.getPath()+FileUtils.getSystemFileSeparator()+webRootName;
-
+            
            String path = pages.get(i).getFile().getPath();
-           path= path.replaceAll(webRoot, "");
+           //path= path.replaceAll(webRoot, "");
+           path=path.substring(webRoot.length(), path.length());
            String tm="";
            if(path.endsWith(FileUtils.getSystemFileSeparator())){
               tm=out+path;
@@ -243,10 +248,7 @@ public class JCVMojo extends AbstractMojo {
           
             jcf.processCompressionJsCss(tempPath);
         }
-        
-       
-        
-        
+
         //复制未处理文件 　
         if (compressionJs == true || compressionCss == true ||
                         globaCssMethod == JCVMethodEnum.MD5FileName_METHOD || globaJsMethod==JCVMethodEnum.MD5FileName_METHOD ) {
@@ -283,32 +285,22 @@ public class JCVMojo extends AbstractMojo {
     
     public void copyMd5FileNameJssCss(JCVFileInfo jcf){
         
-        String tempPath="";
         if(null!=outJSCSSDirPath &&!"".equals(outJSCSSDirPath) ){
            
             
         }else {
             outJSCSSDirPath=outputDirectory.getPath()+FileUtils.getSystemFileSeparator()+webRootName;
         }
-        
-        
-        if(tempPath.endsWith(FileUtils.getSystemFileSeparator())){
-            tempPath+=outJSCSSDirPath+jcf.getRelativelyFilePath();
-        }else {
-            tempPath+=outJSCSSDirPath+FileUtils.getSystemFileSeparator()+jcf.getRelativelyFilePath();
-        }
-        int lastIndexOf = tempPath.lastIndexOf(FileUtils.getSystemFileSeparator());
-        tempPath = tempPath.substring(0, lastIndexOf);
-        
-        File f=new File(tempPath);
-        if(!f.exists()){
+        String tempPath= BaseUtils.getJSSCSSOutPath(jcf,true, JCVMethodEnum.MD5FileName_METHOD, outJSCSSDirPath);
+        File f = new File( BaseUtils.getFilePathDir(tempPath));
+        if (!f.exists()) {
             f.mkdirs();
         }
+      
         try {
             if(null==jcf.getFinalFileName() ||  "".equals(jcf.getFinalFileName())){
                 return;
             }
-            tempPath+=FileUtils.getSystemFileSeparator()+jcf.getFinalFileName();//jcf.getFileVersion()+"."+jcf.getFileType();
             getLog().info("copy file:"+tempPath);
             FileUtils.fileChannelCopy(jcf.getFile(), new File(tempPath));
         } catch (IOException e) {
@@ -325,29 +317,19 @@ public class JCVMojo extends AbstractMojo {
      */
     public void copyFileJssCss(JCVFileInfo jcf){
         
-        String tempPath="";
         if(null!=outJSCSSDirPath &&!"".equals(outJSCSSDirPath) ){
            
             
         }else {
             outJSCSSDirPath=outputDirectory.getPath()+FileUtils.getSystemFileSeparator()+webRootName;
         }
-        
-        
-        if(tempPath.endsWith(FileUtils.getSystemFileSeparator())){
-            tempPath+=outJSCSSDirPath+jcf.getRelativelyFilePath();
-        }else {
-            tempPath+=outJSCSSDirPath+FileUtils.getSystemFileSeparator()+jcf.getRelativelyFilePath();
-        }
-        int lastIndexOf = tempPath.lastIndexOf(FileUtils.getSystemFileSeparator());
-        tempPath = tempPath.substring(0, lastIndexOf);
-        
-        File f=new File(tempPath);
-        if(!f.exists()){
+        String tempPath= BaseUtils.getJSSCSSOutPath(jcf,false, JCVMethodEnum.DEFAULTS_UNUSED, outJSCSSDirPath);
+        File f = new File( BaseUtils.getFilePathDir(tempPath));
+        if (!f.exists()) {
             f.mkdirs();
         }
         try {
-            tempPath+=FileUtils.getSystemFileSeparator()+jcf.getFileName();
+           
             getLog().info("copy not processed file:"+tempPath);
             FileUtils.fileChannelCopy(jcf.getFile(), new File(tempPath));
         } catch (IOException e) {
@@ -385,12 +367,13 @@ public class JCVMojo extends AbstractMojo {
         JCVFileInfo jcv=null;
         for(File f:listFile){
             String path = f.getPath();
-            path= path.replaceFirst(webRoot, "");
+            path=path.substring(webRoot.length(), path.length());
             if(jcv==null){
                 jcv=new JCVFileInfo();
             }
             if(!FileUtils.getSystemFileSeparatorIslinux()){
-                path= path.replaceAll("\\", "/");
+                //path= path.replaceAll("\\\\", "/");
+                path=BaseUtils.replaceLinuxSystemLine(path);
             }
             jcv.setFileType(JCVFileInfo.JS);
             jcv.setFileVersion(getFileVersion(f,globaJsMethod));
@@ -429,12 +412,13 @@ public class JCVMojo extends AbstractMojo {
         JCVFileInfo jcv=null;
         for(File f:listFile){
             String path = f.getPath();
-            path= path.replaceFirst(webRoot, "");
+           // path= path.replaceFirst(webRoot, "");
+              path=path.substring(webRoot.length(), path.length());
             if(jcv==null){
                 jcv=new JCVFileInfo();
             }
             if(!FileUtils.getSystemFileSeparatorIslinux()){
-                path= path.replaceAll("\\", "/");
+                path=BaseUtils.replaceLinuxSystemLine(path);
             }
             jcv.setFileType(JCVFileInfo.CSS);
             jcv.setFileVersion(getFileVersion(f,globaCssMethod));
