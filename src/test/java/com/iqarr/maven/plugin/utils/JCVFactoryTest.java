@@ -46,7 +46,6 @@ public class JCVFactoryTest {
     public void testprocessCSS() throws IOException{
         String html="<link rel='stylesheet' type='text/css' href='http://style.test.com/css/public.css' />";
         //String html2="<link rel=\"stylesheet2\" type=\"text/css2\" href=\"http://style.test2.com/css/public.css\" />";
-       // String html=FileUtils.readToString(new File("/home/user/d17-workspaces/eclipse-my/zy-storage/storage-center/src/main/webapp/index.html"), "utf-8")[0];
         StringBuffer sb=new StringBuffer(html);
         JCVFactory jc=new JCVFactory();
         List<String> baseCssDomin=new ArrayList<>();

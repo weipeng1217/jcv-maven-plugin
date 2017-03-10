@@ -41,8 +41,6 @@ public class HtmlUtilsTest {
     public void testCleanBaseComments() throws Exception {
        String readToStr = FileUtils.readToStr(new File(this.getClass().getClassLoader().getResource("demo.js").getPath()) , "utf-8");
         
-        //String readToStr = FileUtils.readToStr(new File("/home/user/d17-workspaces/eclipse-d17/d17-wyb/d17-wyb-web/target/wyb/js/jquery/jquery.form.js") , "utf-8");
-        
         StringBuffer sb=new StringBuffer(readToStr);
        // HtmlUtils.cleanBaseComments(sb, "utf-8");
        
@@ -102,7 +100,6 @@ public class HtmlUtilsTest {
     
     @Test
     public void testcleanBaseAllComments() throws Exception{
-        ///home/user/d17-workspaces/eclipse-d17/d17-wyb/d17-wyb-web/target/wyb/js/validate/Vcommon.js
        String readToStr = FileUtils.readToStr(new File(this.getClass().getClassLoader().getResource("demo.js").getPath()) , "utf-8");;
         StringBuffer sb=new StringBuffer(readToStr);
          HtmlUtils.cleanBaseAllComments(sb, "utf-8",false);
