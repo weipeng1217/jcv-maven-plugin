@@ -4,7 +4,7 @@
 
 	<groupId>com.iqarr.maven.plugin</groupId>
 	<artifactId>jcv-maven-plugin</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6</version>
 	<packaging>maven-plugin</packaging>
 
 
@@ -95,6 +95,53 @@
 				</plugins>
 			</build>
 		</profile>
+		
+		<!--develop main-->
+		<profile>
+			<id>developMain</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.6.1</version>
+						<configuration>
+							<source>1.7</source>
+							<target>1.7</target>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-plugin-plugin</artifactId>
+						<version>3.2</version>
+						<configuration>
+							<goalPrefix>jcv</goalPrefix>
+							<skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+						</configuration>
+					</plugin>
+					<!-- 拷贝依赖的jar包到lib目录 -->  
+           	 <plugin>  
+                <groupId>org.apache.maven.plugins</groupId>  
+                <artifactId>maven-dependency-plugin</artifactId>  
+                <executions>  
+                    <execution>  
+                        <id>copy</id>  
+                        <phase>package</phase>  
+                        <goals>  
+                            <goal>copy-dependencies</goal>  
+                        </goals>  
+                        <configuration>  
+                            <outputDirectory>  
+                                ${project.build.directory}/lib  
+                            </outputDirectory>  
+                        </configuration>  
+                    </execution>  
+                </executions>  
+            </plugin> 
+				</plugins>
+			</build>
+		</profile>
+		
 		<!-- release -->
 		<profile>
 			<id>release</id>
@@ -179,4 +226,5 @@
 			</distributionManagement>
 		</profile>
 	</profiles>
+	
 </project>

@@ -1,8 +1,9 @@
 package com.iqarr.maven.plugin.exception;
 
-import org.apache.maven.plugin.logging.Log;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
+
+import com.iqarr.maven.plugin.support.logger.LoggerFactory;
 
 /**  
 * @Package 
@@ -20,7 +21,6 @@ import org.mozilla.javascript.EvaluatorException;
 */
 public class YUIException implements ErrorReporter {
     
-    private Log                      log;
     
     private String                   fileName;
     /**  
@@ -28,9 +28,8 @@ public class YUIException implements ErrorReporter {
      * <p>Description: </p>  
      * @param log  
      */
-     public YUIException(Log log,String fileName) {
+     public YUIException(String fileName) {
          
-         this.log = log;
          this.fileName=fileName;
      }
     
@@ -48,14 +47,14 @@ public class YUIException implements ErrorReporter {
     @Override
     public void error(String message, String sourceName,
                     int line, String lineSource, int lineOffset) {
-        if (log != null) {
-            log.error("\n[ERROR] in  "+fileName);
+        
+        	LoggerFactory.error("\n[ERROR] in  "+fileName);
             if (line < 0) {
-                log.error("  " + message);
+            	LoggerFactory.error("  " + message);
             } else {
-                log.error("  " + line + ':' + lineOffset + ':' + message);
+            	LoggerFactory.error("  " + line + ':' + lineOffset + ':' + message);
             }
-        }
+        
     }
     
     /*
@@ -92,14 +91,13 @@ public class YUIException implements ErrorReporter {
     @Override
     public void warning(String message, String sourceName,
                     int line, String lineSource, int lineOffset) {
-        if (log != null) {
-            log.warn("\n[WARNING] in  "+fileName);
+    		LoggerFactory.warn("\n[WARNING] in  "+fileName);
             if (line < 0) {
-                log.warn("  " + message);
+            	LoggerFactory.warn("  " + message);
             } else {
-                log.warn("  " + line + ':' + lineOffset + ':' + message);
+            	LoggerFactory.warn("  " + line + ':' + lineOffset + ':' + message);
             }
-        }
+        
         
     }
     
