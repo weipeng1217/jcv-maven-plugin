@@ -25,7 +25,7 @@ public enum JCVMethodEnum {
     /** md5文件名 **/
     MD5FileName_METHOD("md5FileName",2),
     
-    /** 未使用 */
+    /** 未使用(内部标识) */
     DEFAULTS_UNUSED("defualts_unuser",3),
     
     ;

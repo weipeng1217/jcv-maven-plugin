@@ -50,6 +50,20 @@ public class JCVFactory {
     
     private final static String HTML_URL_SEPARATOR="/";
     
+    private final static String HTML_JAVASCRIPT_LABLE_START="<script";
+    private final static String HTML_JAVASCRIPT_SRC="src=";
+    private final static String HTML_JAVASCRIPT_END=">";
+    
+    //css
+    private final static String HTML_CSS_LABLE_START="<link";
+    private final static String HTML_CSS_LABLE_SRC="href=";
+    private final static String HTML_CSS_LABLE_END=">";
+    
+    //comment
+    private final static String HTML_COMMENT_LABLE_START="<!--";
+    private final static String HTML_COMMENT_LABLE_END="-->";
+    
+    
     private Map<String, JCVFileInfo> jcvs;
     
     private JCVMethodEnum            jsEn;
@@ -348,13 +362,13 @@ public class JCVFactory {
         }else {
             dp.setIndexPos(index);
         }
-        dp.setStartLab("<link");
-        dp.setEndLad("href=");
-        dp.setCheckEndLad(">");
+        dp.setStartLab(HTML_CSS_LABLE_START);
+        dp.setEndLad(HTML_CSS_LABLE_SRC);
+        dp.setCheckEndLad(HTML_CSS_LABLE_END);
         getHtmllabDocposition(sb,dp);
         if(dp.getEndPos()==-1 ||  !dp.isFindIt()){
             if(index<sb.length() && dp.getStartPos()!=-1){
-                return  processCSS(sb, index+dp.getStartPos());
+                return  processCSS(sb, dp.getStartPos()+HTML_CSS_LABLE_START.length()+1); //index+
             }else {
                 return -1;
             }
@@ -374,7 +388,7 @@ public class JCVFactory {
         dpsrc.setIndexPos(dp.getEndPos()-1);
         dpsrc.setStartLab(endChar+"");
         dpsrc.setEndLad(endChar+"");
-        dpsrc.setCheckEndLad(">");
+        dpsrc.setCheckEndLad(HTML_CSS_LABLE_END);
         getHtmllabDocposition(sb,dpsrc);
         if(!dpsrc.isFindIt()){
             return -1;
@@ -414,14 +428,14 @@ public class JCVFactory {
         }else {
             dp.setIndexPos(index);
         }
-        dp.setStartLab("<script");
-        dp.setEndLad("src=");
-        dp.setCheckEndLad(">");
+        dp.setStartLab(HTML_JAVASCRIPT_LABLE_START); //"<script"
+        dp.setEndLad(HTML_JAVASCRIPT_SRC); //src=
+        dp.setCheckEndLad(HTML_JAVASCRIPT_END); //>
         getHtmllabDocposition(sb,dp);
         
         if(dp.getEndPos()==-1 ||  !dp.isFindIt() ){
             if(index<sb.length()&& dp.getStartPos()!=-1){
-                return  processJS(sb, index+dp.getStartPos()+"<script".length());
+                return  processJS(sb, dp.getStartPos()+HTML_JAVASCRIPT_LABLE_START.length()+1); //index+
             }else {
                 return -1;
             }
@@ -444,7 +458,7 @@ public class JCVFactory {
         dpsrc.setIndexPos(dp.getEndPos()-1);
         dpsrc.setStartLab(endChar+"");
         dpsrc.setEndLad(endChar+"");
-        dpsrc.setCheckEndLad(">");
+        dpsrc.setCheckEndLad(HTML_JAVASCRIPT_END);
         getHtmllabDocposition(sb,dpsrc);
         if(!dpsrc.isFindIt()){
             return -1;
@@ -488,8 +502,8 @@ public class JCVFactory {
         }else {
             dp.setIndexPos(index);
         }
-        dp.setStartLab("<!--");
-        dp.setEndLad("-->");
+        dp.setStartLab(HTML_COMMENT_LABLE_START); //HTML_COMMENT_LABLE_START "<!--"
+        dp.setEndLad(HTML_COMMENT_LABLE_END);  //"-->"
         getHtmllabDocposition(sb,dp);
         if(!dp.isFindIt()){ 
                 return -1;  
@@ -497,6 +511,27 @@ public class JCVFactory {
         
         if(dp.getStartPos()==-1){
             return -1;
+        }
+        
+        //check 
+        /**
+        <!--[if lt IE 9]>
+        <script type="text/javascript">
+            
+        </script>
+        <![endif]-->
+        <!--[if IE 9]>
+        <script type="text/javascript">
+          
+        </script>
+        <![endif]-->
+        */
+        //if(dp.getStartPos())
+        int checkIndex=dp.getStartPos()+HTML_COMMENT_LABLE_START.length();
+        String substring = sb.substring(checkIndex, checkIndex+1);
+        if(substring!=null || "[".equals(substring)){
+            index =dp.getEndPos()==-1?-1:dp.getEndPos();
+            return processPageComment(sb,index);
         }
         if(dp.getEndPos()==-1){
             sb.delete(dp.getStartPos(), sb.length()); 
