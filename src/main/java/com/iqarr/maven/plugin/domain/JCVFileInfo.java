@@ -219,6 +219,20 @@ public class JCVFileInfo {
         return true;
     }
 
+	/*
+	* <p>Title: toString</p>  
+	* <p>Description: </p>  
+	* @return  
+	* @see java.lang.Object#toString()  
+	*/
+	
+	@Override
+	public String toString() {
+		return "JCVFileInfo [relativelyFilePath=" + relativelyFilePath + ", fileVersion=" + fileVersion + ", fileType="
+		                + fileType + ", fileName=" + fileName + ", file=" + file + ", finalFileName=" + finalFileName
+		                + ", isCopy=" + isCopy + ", fileHashKey=" + fileHashKey + "]";
+	}
+
   
     
 }

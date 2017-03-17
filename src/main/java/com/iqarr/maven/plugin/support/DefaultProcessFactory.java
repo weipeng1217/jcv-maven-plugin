@@ -12,7 +12,6 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.util.List;
-import java.util.Map;
 
 import org.mozilla.javascript.EvaluatorException;
 
@@ -28,39 +27,30 @@ import com.yahoo.platform.yui.compressor.CssCompressor;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 
 /**
- * @Package 默认处理方式s
+ * A factory for creating DefaultProcess objects.
+ *
+ * @author         zhangyong
+ * @version          V1.0
+ * @since        V1.0
+ * @Package 默认处理方式
  *          com.iqarr.maven.plugin.support
- * @ClassName:
- *             DefaultProcessFactory
- * @since
- *        V1.0
- * @author
- *         zhangyong
- * @date
- *       2017/03/16-17:16:22
- * @version
- *          V1.0
+ * @ClassName:             DefaultProcessFactory
+ * @date       2017/03/16-17:16:22
  */
 public class DefaultProcessFactory extends AbstractProcessFactory {
 	
 	/**
-	 * <p>
-	 * Title:
-	 * </p>
-	 * <p>
-	 * Description:
-	 * </p>
 	 * 
-	 * @param jCVConfig
-	 * @param jcvFiles
+	 *
+	 * @param jCVConfig the jcv config
 	 */
-	public DefaultProcessFactory(JCVConfig jCVConfig, Map<String, JCVFileInfo> jcvFiles) {
-		super (jCVConfig, jcvFiles);
+	public DefaultProcessFactory(JCVConfig jCVConfig) {
+		super (jCVConfig);
 	}
 	
 	/*
-	 * <p>Title: processCompressionJsCss</p>
-	 * <p>Description: </p>
+	 * Title: processCompressionJsCss
+	 * Description:
 	 * 
 	 * @param processFiles
 	 * 
@@ -117,38 +107,56 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		}
 		
 	}
-		 
-   private boolean checkJcvIsSkip(final JCVFileInfo jcv,final JCVConfig jCVConfig){
-	   
-	   
-	   
-	   //不处理后缀为.min.*的文件
-       if(jcv.getFileName().indexOf(jCVConfig.getSkipFileNameSuffix ()+"."+jcv.getFileType())!=-1){
-    	   LoggetFactory.info("The suffix min is not processed:" + jcv.getFileName());
-    	   return true;
-       }
-	   
-	   if (JCVFileInfo.CSS.equals (jcv.getFileType ())) {
-		   
-		   if(jCVConfig.getExcludesCss ()!=null && checkStrIsInList(jcv.getRelativelyFilePath(),jCVConfig.getExcludesCss (),true) ){
-               
-          	 LoggetFactory.info("The file  is not processed:" + jcv.getFileName());
-             return true;
-         }
-		   
-	   }else  if (JCVFileInfo.JS.equals (jcv.getFileType ())) { 
-		   if(jCVConfig.getExcludesJs ()!=null && checkStrIsInList(jcv.getRelativelyFilePath(),jCVConfig.getExcludesJs (),true) ){
-			   LoggetFactory.info("The file  is not processed:" + jcv.getFileName());
-	             return true;
-		   }
-	   }else {
+	
+	/**
+	 * Check jcv is skip.
+	 *
+	 * @param jcv the jcv
+	 * @param jCVConfig the j cv config
+	 * @return true, if successful
+	 */
+	private boolean checkJcvIsSkip(final JCVFileInfo jcv, final JCVConfig jCVConfig) {
+		
+		// 不处理后缀为.min.*的文件
+		if (jcv.getFileName ().indexOf (jCVConfig.getSkipFileNameSuffix () + "." + jcv.getFileType ()) != -1) {
+			LoggetFactory.info ("The suffix min is not processed:" + jcv.getFileName ());
+			return true;
+		}
+		
+		if (JCVFileInfo.CSS.equals (jcv.getFileType ())) {
+			
+			if (jCVConfig.getExcludesCss () != null
+			                && checkStrIsInList (jcv.getRelativelyFilePath (),jCVConfig.getExcludesCss (),true)) {
+				
+				LoggetFactory.info ("The file  is not processed:" + jcv.getFileName ());
+				return true;
+			}
+			
+		}
+		else if (JCVFileInfo.JS.equals (jcv.getFileType ())) {
+			if (jCVConfig.getExcludesJs () != null
+			                && checkStrIsInList (jcv.getRelativelyFilePath (),jCVConfig.getExcludesJs (),true)) {
+				LoggetFactory.info ("The file  is not processed:" + jcv.getFileName ());
+				return true;
+			}
+		}
+		else {
 			LoggetFactory.error ("file type error :" + jcv.getFileType ());
 			return true;
 		}
-	   
-	   return false;
-   }
+		
+		return false;
+	}
 	
+	/**
+	 * Do process compression js css.
+	 *
+	 * @param jcv the jcv
+	 * @param skipFileNameSuffix the skip file name suffix
+	 * @param sourceEncoding the source encoding
+	 * @param outDir the out dir
+	 * @param jCVConfig the j cv config
+	 */
 	private void doProcessCompressionJsCss(JCVFileInfo jcv, final String skipFileNameSuffix, final String sourceEncoding, final String outDir, final JCVConfig jCVConfig) {
 		// yui
 		Reader in = null;
@@ -183,8 +191,9 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 				                .isVerbose (),jCVConfig.getYuiConfig ()
 				                                .isPreserveSemi (),jCVConfig.getYuiConfig ().isDisableOptimizations ());
 				
-			}else {
-				LoggetFactory.error ("file type error :" + jcv.getFileType ());
+			}
+			else {
+				LoggetFactory.error ("file type error :" + jcv.getFileType () + " fileIfo:" + jcv.toString ());
 			}
 			
 		}
@@ -192,7 +201,8 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 			
 			LoggetFactory.error (e);
 			
-		}finally {
+		}
+		finally {
 			try {
 				if (in != null) {
 					
@@ -211,23 +221,17 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		}
 	}
 	
+	
 	/*
-	 * <p>Title: processCSSVersion</p>
-	 * <p>Description: </p>
-	 * 
-	 * @param html
-	 * 
-	 * @param index
-	 * 
-	 * @param processSuccessFiles
-	 * 
-	 * @param jCVConfig
-	 * 
-	 * @return
-	 * 
-	 * @see com.iqarr.maven.plugin.support.AbstractProcessFactory#processCSSVersion(java.lang.StringBuffer, int,
-	 * java.util.List, com.iqarr.maven.plugin.domain.JCVConfig)
-	 */
+	* Title: processCSSVersion  
+	* Description:   
+	* @param html
+	* @param index
+	* @param processSuccessFiles
+	* @param jCVConfig
+	* @return  
+	* @see com.iqarr.maven.plugin.support.AbstractProcessFactory#processCSSVersion(java.lang.StringBuffer, int, java.util.List, com.iqarr.maven.plugin.domain.JCVConfig)  
+	*/
 	
 	@Override
 	public int processCSSVersion(StringBuffer html, int index, List<JCVFileInfo> processSuccessFiles, JCVConfig jCVConfig) {
@@ -235,23 +239,17 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		return processVersion (html,index,processSuccessFiles,JCVFileInfo.CSS,jCVConfig);
 	}
 	
+	
 	/*
-	 * <p>Title: processJSVersion</p>
-	 * <p>Description: </p>
-	 * 
-	 * @param html
-	 * 
-	 * @param index
-	 * 
-	 * @param processSuccessFiles
-	 * 
-	 * @param jCVConfig
-	 * 
-	 * @return
-	 * 
-	 * @see com.iqarr.maven.plugin.support.AbstractProcessFactory#processJSVersion(java.lang.StringBuffer, int,
-	 * java.util.List, com.iqarr.maven.plugin.domain.JCVConfig)
-	 */
+	* Title: processJSVersion  
+	* Description:   
+	* @param html
+	* @param index
+	* @param processSuccessFiles
+	* @param jCVConfig
+	* @return  
+	* @see com.iqarr.maven.plugin.support.AbstractProcessFactory#processJSVersion(java.lang.StringBuffer, int, java.util.List, com.iqarr.maven.plugin.domain.JCVConfig)  
+	*/
 	
 	@Override
 	public int processJSVersion(StringBuffer html, int index, List<JCVFileInfo> processSuccessFiles, JCVConfig jCVConfig) {
@@ -259,91 +257,83 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		return processVersion (html,index,processSuccessFiles,JCVFileInfo.JS,jCVConfig);
 	}
 	
+	
 	/*
-	 * <p>Title: processPageComment</p>
-	 * <p>Description: </p>
-	 * 
-	 * @param sb
-	 * 
-	 * @param index
-	 * 
-	 * @param jCVConfig
-	 * 
-	 * @return
-	 * 
-	 * @see com.iqarr.maven.plugin.support.AbstractProcessFactory#processPageComment(java.lang.StringBuffer, int,
-	 * com.iqarr.maven.plugin.domain.JCVConfig)
-	 */
+	* Title: processPageComment  
+	* Description:   
+	* @param sb
+	* @param index
+	* @param jCVConfig
+	* @return  
+	* @see com.iqarr.maven.plugin.support.AbstractProcessFactory#processPageComment(java.lang.StringBuffer, int, com.iqarr.maven.plugin.domain.JCVConfig)  
+	*/
 	
 	@Override
 	public int processPageComment(StringBuffer sb, int index, JCVConfig jCVConfig) {
 		
-		  if(index==-1){
-	            return 1;
-	        }
-	        DocPosition dp=new DocPosition();
-	        if(index==0 ){
-	            dp.setIndexPos(index);
-	        }else {
-	            dp.setIndexPos(index);
-	        }
-	        dp.setStartLab(HTML_COMMENT_LABLE_START); //HTML_COMMENT_LABLE_START "<!--"
-	        dp.setEndLad(HTML_COMMENT_LABLE_END);  //"-->"
-	        getHtmllabDocposition(sb,dp);
-	        if(!dp.isFindIt()){ 
-	                return -1;  
-	        }
-	        
-	        if(dp.getStartPos()==-1){
-	            return -1;
-	        }
-	        
-	        //check 
-	        /**
-	        <!--[if lt IE 9]>
-	        <script type="text/javascript">
-	            
-	        </script>
-	        <![endif]-->
-	        <!--[if IE 9]>
-	        <script type="text/javascript">
-	          
-	        </script>
-	        <![endif]-->
-	        */
-	        //if(dp.getStartPos())
-	        int checkIndex=dp.getStartPos()+HTML_COMMENT_LABLE_START.length();
-	        String substring = sb.substring(checkIndex, checkIndex+1);
-	        if(substring!=null || "[".equals(substring)){
-	            index =dp.getEndPos()==-1?-1:dp.getEndPos();
-	            return processPageComment(sb,index,jCVConfig);
-	        }
-	        if(dp.getEndPos()==-1){
-	            sb.delete(dp.getStartPos(), sb.length()); 
-	            index=-1;
-	        }else {
-	            sb.delete(dp.getStartPos(), dp.getEndPos());
-	            index=dp.getEndPos();
-	        }
-	         
-	        return processPageComment(sb,0,jCVConfig);
+		if (index == -1) {
+			return 1;
+		}
+		DocPosition dp = new DocPosition ();
+		if (index == 0) {
+			dp.setIndexPos (index);
+		}
+		else {
+			dp.setIndexPos (index);
+		}
+		dp.setStartLab (HTML_COMMENT_LABLE_START); // HTML_COMMENT_LABLE_START "<!--"
+		dp.setEndLad (HTML_COMMENT_LABLE_END); // "-->"
+		getHtmllabDocposition (sb,dp);
+		if (!dp.isFindIt ()) {
+			return -1;
+		}
+		
+		if (dp.getStartPos () == -1) {
+			return -1;
+		}
+		
+		// check
+		/**
+		 * <!--[if lt IE 9]>
+		 * <script type="text/javascript">
+		 * 
+		 * </script>
+		 * <![endif]-->
+		 * <!--[if IE 9]>
+		 * <script type="text/javascript">
+		 * 
+		 * </script>
+		 * <![endif]-->
+		 */
+		// if(dp.getStartPos())
+		int checkIndex = dp.getStartPos () + HTML_COMMENT_LABLE_START.length ();
+		String substring = sb.substring (checkIndex,checkIndex + 1);
+		if (substring != null || "[".equals (substring)) {
+			index = dp.getEndPos () == -1 ? -1 : dp.getEndPos ();
+			return processPageComment (sb,index,jCVConfig);
+		}
+		if (dp.getEndPos () == -1) {
+			sb.delete (dp.getStartPos (),sb.length ());
+			index = -1;
+		}
+		else {
+			sb.delete (dp.getStartPos (),dp.getEndPos ());
+			index = dp.getEndPos ();
+		}
+		
+		return processPageComment (sb,0,jCVConfig);
 	}
 	
+	
 	/*
-	 * <p>Title: mergePageCss</p>
-	 * <p>Description: </p>
-	 * 
-	 * @param html
-	 * 
-	 * @param index
-	 * 
-	 * @param jCVConfig
-	 * 
-	 * @return
-	 * 
-	 * @see com.iqarr.maven.plugin.support.AbstractProcessFactory#mergePageCss(java.lang.StringBuffer, int,
-	 * com.iqarr.maven.plugin.domain.JCVConfig)
-	 */
+	* Title: mergePageCss  
+	* Description:   
+	* @param html
+	* @param index
+	* @param jCVConfig
+	* @return  
+	* @see com.iqarr.maven.plugin.support.AbstractProcessFactory#mergePageCss(java.lang.StringBuffer, int, com.iqarr.maven.plugin.domain.JCVConfig)  
+	*/
 	
 	@Override
 	public int mergePageCss(StringBuffer html, int index, JCVConfig jCVConfig) {
@@ -351,21 +341,16 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		return 0;
 	}
 	
+	
 	/*
-	 * <p>Title: mergePageJS</p>
-	 * <p>Description: </p>
-	 * 
-	 * @param html
-	 * 
-	 * @param index
-	 * 
-	 * @param jCVConfig
-	 * 
-	 * @return
-	 * 
-	 * @see com.iqarr.maven.plugin.support.AbstractProcessFactory#mergePageJS(java.lang.StringBuilder, int,
-	 * com.iqarr.maven.plugin.domain.JCVConfig)
-	 */
+	* Title: mergePageJS  
+	* Description:   
+	* @param html
+	* @param index
+	* @param jCVConfig
+	* @return  
+	* @see com.iqarr.maven.plugin.support.AbstractProcessFactory#mergePageJS(java.lang.StringBuilder, int, com.iqarr.maven.plugin.domain.JCVConfig)  
+	*/
 	
 	@Override
 	public int mergePageJS(StringBuilder html, int index, JCVConfig jCVConfig) {
@@ -373,6 +358,16 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		return 0;
 	}
 	
+	/**
+	 * Process version.
+	 *
+	 * @param html the html
+	 * @param index the index
+	 * @param processSuccessFiles the process success files
+	 * @param fileType the file type
+	 * @param jCVConfig the j cv config
+	 * @return the int
+	 */
 	private int processVersion(StringBuffer html, int index, List<JCVFileInfo> processSuccessFiles, final String fileType, final JCVConfig jCVConfig) {
 		
 		DocPosition dp = new DocPosition ();
@@ -451,6 +446,18 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		return res;
 	}
 	
+	/**
+	 * Processlink.
+	 *
+	 * @param sb the sb
+	 * @param start the start
+	 * @param end the end
+	 * @param historylink the historylink
+	 * @param fileType the file type
+	 * @param processSuccessFiles the process success files
+	 * @param jCVConfig the j cv config
+	 * @return the int
+	 */
 	private int processlink(StringBuffer sb, final int start, final int end, final String historylink, final String fileType, List<JCVFileInfo> processSuccessFiles, final JCVConfig jCVConfig) {
 		
 		JCVFileInfo jcvFileInfo = null;
@@ -525,15 +532,16 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 	}
 	
 	/**
-	 * 
-	 * 插入版本号
-	 * 
-	 * @param sb
-	 * @param start
-	 * @param end
-	 * @param historylink
-	 * @param fullLink
-	 * @param jcvFileInfo
+	 * 插入版本号.
+	 *
+	 * @param sb the sb
+	 * @param start the start
+	 * @param end the end
+	 * @param historylink the historylink
+	 * @param fullLink the full link
+	 * @param jcvFileInfo the jcv file info
+	 * @param processSuccessFiles the process success files
+	 * @param jCVConfig the j cv config
 	 */
 	private void instatVersion(StringBuffer sb, final int start, final int end, final String historylink, String fullLink, JCVFileInfo jcvFileInfo, List<JCVFileInfo> processSuccessFiles, JCVConfig jCVConfig) {
 		if (jcvFileInfo != null) {
@@ -697,16 +705,16 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 	}
 	
 	/**
-	 * 
-	 * 获取版本号字符串
-	 * 
-	 * @param jcvFileInfo
-	 * @param isMd5FileName
-	 * @param isCompression
-	 *            压缩
-	 * @param suffix
-	 * @param historylink
-	 * @return
+	 * 获取版本号字符串.
+	 *
+	 * @param jcvFileInfo the jcv file info
+	 * @param isMd5FileName the is md5 file name
+	 * @param isCompression            压缩
+	 * @param suffix the suffix
+	 * @param historylink the historylink
+	 * @param processSuccessFiles the process success files
+	 * @param jCVConfig the j cv config
+	 * @return the version str
 	 */
 	private String getVersionStr(JCVFileInfo jcvFileInfo, final boolean isMd5FileName, final boolean isCompression, final String suffix, final String historylink, List<JCVFileInfo> processSuccessFiles, JCVConfig jCVConfig) {
 		String versionStr = "";
@@ -777,6 +785,12 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		return versionStr;
 	}
 	
+	/**
+	 * Removes the url par.
+	 *
+	 * @param tempUrl the temp url
+	 * @return the string
+	 */
 	private String removeUrlPar(String tempUrl) {
 		if (tempUrl.indexOf ("?") > 0) {
 			String[] split = tempUrl.split ("\\?");
@@ -788,6 +802,12 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		return tempUrl;
 	}
 	
+	/**
+	 * Gets the urlp par.
+	 *
+	 * @param tempUrl the temp url
+	 * @return the urlp par
+	 */
 	private String getUrlpPar(String tempUrl) {
 		if (tempUrl.indexOf ("?") > 0) {
 			String[] split = tempUrl.split ("\\?");

@@ -26,6 +26,11 @@ public class JCVConfig {
 	private List<String> pageSuffixs;
 	
 	/**
+	 * 输出文件夹
+	 */
+	private String outDirRoot;
+	
+	/**
 	 * js 使用方法
 	 */
 	private JCVMethodEnum jsMethod;
@@ -356,6 +361,20 @@ public class JCVConfig {
 	 */
 	public void setPageSuffixs(List<String> pageSuffixs) {
 		this.pageSuffixs = pageSuffixs;
+	}
+	/**
+	 * 获取 输出文件夹 
+	 * @return outDirRoot
+	 */
+	public String getOutDirRoot() {
+		return outDirRoot;
+	}
+	/**
+	 * 设置 输出文件夹
+	 * @param outDirRoot 输出文件夹
+	 */
+	public void setOutDirRoot(String outDirRoot) {
+		this.outDirRoot = outDirRoot;
 	}
 	
 	

@@ -68,9 +68,8 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	
 	
 	
-	public AbstractProcessFactory( JCVConfig jCVConfig,final Map<String, JCVFileInfo> jcvFiles){
+	public AbstractProcessFactory( JCVConfig jCVConfig){
 		this.jCVConfig=jCVConfig;
-		this.jcvFiles=jcvFiles;
 	}
 	
 	
@@ -96,6 +95,27 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
         	pages=new ArrayList<PageInfo> ();
         }
         getAllProcessFile(pages,webAppRoot,jCVConfig.getPageSuffixs ());
+        //webRootName
+        String out= jCVConfig.getOutDirRoot ();
+        for(int i=0;i<pages.size();i++){
+            
+           String path = pages.get(i).getFile().getPath();
+           //path= path.replaceAll(webRoot, "");
+           path=path.substring(webAppRoot.length(), path.length());
+           String tm="";
+           if(path.endsWith(FileUtils.getSystemFileSeparator())){
+              tm=out+path;
+           }else {
+               tm=out+FileUtils.getSystemFileSeparator()+path;
+           }
+          int lastIndexOf = tm.lastIndexOf(FileUtils.getSystemFileSeparator());
+          String sub = tm.substring(0, lastIndexOf);
+          File f=new File(sub);
+          if(!f.exists()){
+              f.mkdirs();
+          }
+            pages.get(i).setOutFile(new File(tm));
+        }
 	}
 	
 	 
@@ -150,22 +170,24 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 				LoggetFactory.debug (" page:" + pageInfo.getFile ().getName () + " Processing is complete");
 				FileUtils.writeFile (pageInfo.getOutFile (),jCVConfig.getSourceEncoding (),savehtml);
 				
-				//复制md5文件
-				processMd5FileCpoy(processSuccessFiles);
 				
-				//开始压缩
-				 if (jCVConfig.isCompressionCss () == true || jCVConfig.isCompressionJs () == true) {
-			          
-					 processCompressionJsCss(processSuccessFiles,jCVConfig.getOutJSCSSDirPath (),jCVConfig);
-			     }
-				 //处理未使用文件
-				 doCopyUntreatedFile(processSuccessFiles);
 				 
 			}
 			catch (Exception e) {
 				LoggetFactory.error ("Skip the file :" + pageInfo.getFile ().getPath (),e);
 			}
-		}
+		}//for end
+		
+		//复制md5文件
+		processMd5FileCpoy(processSuccessFiles);
+		
+		//开始压缩
+		 if (jCVConfig.isCompressionCss () == true || jCVConfig.isCompressionJs () == true) {
+	          
+			 processCompressionJsCss(processSuccessFiles,jCVConfig.getOutJSCSSDirPath (),jCVConfig);
+	     }
+		 //处理未使用文件
+		 doCopyUntreatedFile(processSuccessFiles);
 	}
 	/**
 	 * 

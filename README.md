@@ -220,7 +220,7 @@
 	</yuiConfig>
 ```
 
-21. `braekFileNameSuffix`
+21. `skipFileNameSuffix`
 
 	* 跳过文件名后缀(后缀之前的名称)，例如：　ok.min.js 如果想跳过就需要配置`.min`
 	* 默认:`.min`
