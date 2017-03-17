@@ -1,7 +1,9 @@
 package com.iqarr.maven.plugin.utils;
 
+import java.io.File;
 import java.util.List;
 
+import com.iqarr.maven.plugin.constant.JCVConstant;
 import com.iqarr.maven.plugin.domain.JCVFileInfo;
 import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 
@@ -334,6 +336,25 @@ public class BaseUtils {
         
         return path;
     }
+    
+    /**
+     * 
+     * 获取文件hash
+     * @param f
+     * @param meth
+     * @return
+     * @throws Exception
+     */
+    public static String getFileHashKey(final File f,final String meth) throws Exception{
+    	
+    	if(JCVConstant.FILE_HASH_MD5.equals (meth)){
+    		 return Md5Utils.getFileMD5(f);
+    	}else {
+    		throw new Exception ("error meth");
+    	}
+    }
+    
+    
     
     
 }

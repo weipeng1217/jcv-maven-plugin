@@ -44,8 +44,12 @@ public class JCVFileInfo {
     
     /**输出最终文件名　**/
     private String finalFileName;
+    
     /**文件是否被复制 **/
     private boolean isCopy=false;
+    
+    /** 文件hash 值**/
+    private String fileHashKey;
     
     
     /**
@@ -170,8 +174,26 @@ public class JCVFileInfo {
     public void setFinalFileName(String finalFileName) {
         this.finalFileName = finalFileName;
     }
+    
+    
 
-    @Override
+    /**
+	 * 获取 文件hash 值 
+	 * @return fileHashKey
+	 */
+	public String getFileHashKey() {
+		return fileHashKey;
+	}
+
+	/**
+	 * 设置 文件hash 值
+	 * @param fileHashKey 文件hash 值
+	 */
+	public void setFileHashKey(String fileHashKey) {
+		this.fileHashKey = fileHashKey;
+	}
+
+	@Override
     public boolean equals(Object obj) {
         if(obj==null){
             return false;
@@ -196,6 +218,20 @@ public class JCVFileInfo {
         
         return true;
     }
+
+	/*
+	* <p>Title: toString</p>  
+	* <p>Description: </p>  
+	* @return  
+	* @see java.lang.Object#toString()  
+	*/
+	
+	@Override
+	public String toString() {
+		return "JCVFileInfo [relativelyFilePath=" + relativelyFilePath + ", fileVersion=" + fileVersion + ", fileType="
+		                + fileType + ", fileName=" + fileName + ", file=" + file + ", finalFileName=" + finalFileName
+		                + ", isCopy=" + isCopy + ", fileHashKey=" + fileHashKey + "]";
+	}
 
   
     
