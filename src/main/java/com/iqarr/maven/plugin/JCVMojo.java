@@ -16,12 +16,14 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import com.iqarr.maven.plugin.constant.JCVConstant;
 import com.iqarr.maven.plugin.domain.JCVFileInfo;
 import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 import com.iqarr.maven.plugin.domain.PageInfo;
 import com.iqarr.maven.plugin.domain.YUIConfig;
 import com.iqarr.maven.plugin.utils.BaseUtils;
 import com.iqarr.maven.plugin.utils.FileUtils;
+import com.iqarr.maven.plugin.utils.LoggetFactory;
 import com.iqarr.maven.plugin.utils.Md5Utils;
 
 /**  
@@ -379,6 +381,12 @@ public class JCVMojo extends AbstractMojo {
             jcv.setFileVersion(getFileVersion(f,globaJsMethod));
             jcv.setRelativelyFilePath(path);
             jcv.setFileName(f.getName());
+            try {
+				jcv.setFileHashKey (BaseUtils.getFileHashKey (f,JCVConstant.FILE_HASH_MD5));
+			}
+			catch (Exception e) {
+				LoggetFactory.error (e);
+			}
             jcv.setFile(f);
             collected.put(path, jcv);
             jcv=null;
@@ -425,6 +433,12 @@ public class JCVMojo extends AbstractMojo {
             jcv.setRelativelyFilePath(path);
             jcv.setFileName(f.getName());
             jcv.setFile(f);
+            try {
+				jcv.setFileHashKey (BaseUtils.getFileHashKey (f,JCVConstant.FILE_HASH_MD5));
+			}
+			catch (Exception e) {
+				LoggetFactory.error (e);
+			}
             collected.put(path, jcv);
             jcv=null;
         }
@@ -482,6 +496,8 @@ public class JCVMojo extends AbstractMojo {
         return timeStart+"";
        
     }
+    
+   
     
     public void showAsc(){
         getLog().info("      _  _______      __ ");

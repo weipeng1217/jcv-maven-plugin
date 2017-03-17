@@ -1,6 +1,6 @@
 package com.iqarr.maven.plugin.exception;
 
-import org.apache.maven.plugin.logging.Log;
+import com.iqarr.maven.plugin.utils.LoggetFactory;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
 
@@ -20,7 +20,6 @@ import org.mozilla.javascript.EvaluatorException;
 */
 public class YUIException implements ErrorReporter {
     
-    private Log                      log;
     
     private String                   fileName;
     /**  
@@ -28,9 +27,8 @@ public class YUIException implements ErrorReporter {
      * <p>Description: </p>  
      * @param log  
      */
-     public YUIException(Log log,String fileName) {
+     public YUIException(String fileName) {
          
-         this.log = log;
          this.fileName=fileName;
      }
     
@@ -48,14 +46,14 @@ public class YUIException implements ErrorReporter {
     @Override
     public void error(String message, String sourceName,
                     int line, String lineSource, int lineOffset) {
-        if (log != null) {
-            log.error("\n[ERROR] in  "+fileName);
+        
+        	LoggetFactory.error("\n[ERROR] in  "+fileName);
             if (line < 0) {
-                log.error("  " + message);
+            	LoggetFactory.error("  " + message);
             } else {
-                log.error("  " + line + ':' + lineOffset + ':' + message);
+            	LoggetFactory.error("  " + line + ':' + lineOffset + ':' + message);
             }
-        }
+        
     }
     
     /*
@@ -92,14 +90,13 @@ public class YUIException implements ErrorReporter {
     @Override
     public void warning(String message, String sourceName,
                     int line, String lineSource, int lineOffset) {
-        if (log != null) {
-            log.warn("\n[WARNING] in  "+fileName);
+    		LoggetFactory.warn("\n[WARNING] in  "+fileName);
             if (line < 0) {
-                log.warn("  " + message);
+            	LoggetFactory.warn("  " + message);
             } else {
-                log.warn("  " + line + ':' + lineOffset + ':' + message);
+            	LoggetFactory.warn("  " + line + ':' + lineOffset + ':' + message);
             }
-        }
+        
         
     }
     

@@ -64,6 +64,9 @@ public class JCVFactory {
     private final static String HTML_COMMENT_LABLE_END="-->";
     
     
+    /**
+     * 保存所有的js css
+     */
     private Map<String, JCVFileInfo> jcvs;
     
     private JCVMethodEnum            jsEn;
@@ -313,7 +316,7 @@ public class JCVFactory {
                                  }
                                     // yui start
                                     in = new InputStreamReader(new FileInputStream(jcv.getFile()));
-                                    JavaScriptCompressor compressor = new JavaScriptCompressor(in, new YUIException(log, jcv.getFileName()));
+                                    JavaScriptCompressor compressor = new JavaScriptCompressor(in, new YUIException(jcv.getFileName()));
                                     in.close();
                                     in = null;
                                     out = new OutputStreamWriter(new FileOutputStream(tempPath), sourceEncoding);
