@@ -11,7 +11,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mozilla.javascript.EvaluatorException;
 
@@ -38,6 +40,9 @@ import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
  * @date       2017/03/16-17:16:22
  */
 public class DefaultProcessFactory extends AbstractProcessFactory {
+	
+	
+	
 	
 	/**
 	 * 
@@ -79,9 +84,18 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		String skipFileNameSuffix = jCVConfig.getSkipFileNameSuffix ();
 		
 		if (compression) {
+			//保存以处理的文件
+			Map<JCVFileInfo, Boolean> isProcessFile=new HashMap<JCVFileInfo, Boolean> (processFiles.size ());
 			for (int i = 0; i < processFiles.size (); i++) {
 				
 				JCVFileInfo jcv = processFiles.get (i);
+				
+				// 检查是否以处理
+				Boolean boolean1 = isProcessFile.get (jcv);
+				if (null != boolean1 && true == boolean1) {
+					continue;
+				}
+				
 				// 移除未处理文件
 				if (checkJcvIsSkip (jcv,jCVConfig)) {
 					// 当该文件未md5 filename 时候需要复制
@@ -95,12 +109,13 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 						processFiles.remove (i);
 						i--;
 					}
-					
+					isProcessFile.put (jcv,true);
 					continue;
 				}
 				
 				LoggetFactory.debug ("process file:" + jcv.getFileName () + "   index:" + i);
 				doProcessCompressionJsCss (jcv,skipFileNameSuffix,jCVConfig.getSourceEncoding (),outDir,jCVConfig);
+				isProcessFile.put (jcv,true);
 				
 			} // for end
 			
@@ -116,6 +131,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 	 * @return true, if successful
 	 */
 	private boolean checkJcvIsSkip(final JCVFileInfo jcv, final JCVConfig jCVConfig) {
+		
 		
 		// 不处理后缀为.min.*的文件
 		if (jcv.getFileName ().indexOf (jCVConfig.getSkipFileNameSuffix () + "." + jcv.getFileType ()) != -1) {
@@ -205,9 +221,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		finally {
 			try {
 				if (in != null) {
-					
 					in.close ();
-					
 					in = null;
 				}
 				if (out != null) {

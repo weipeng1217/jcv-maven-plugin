@@ -1,5 +1,7 @@
 package com.iqarr.maven.plugin.utils;
 
+import java.io.PrintStream;
+
 import org.apache.maven.plugin.logging.Log;
 
 /**
@@ -16,16 +18,32 @@ import org.apache.maven.plugin.logging.Log;
  * @version
  *          V1.0
  */
-public  class LoggetFactory {
+public class LoggetFactory {
+	
+	public static final int LOG_LEVEL_DEBUG = 3;
+	
+	public static final int LOG_LEVEL_INFO = 2;
+	
+	public static final int LOG_LEVEL_WARN = 1;
+	
+	public static final int LOG_LEVEL_ERROR = 0;
+	
+	/**
+	 * 日志等级
+	 * 
+	 */
+	public static int LOG_LEVEL = LOG_LEVEL_INFO;
 	
 	/**
 	 * log
 	 */
-	private static Log log = null;;
+	private static Log log = null;
+	
+	private static PrintStream printStream;
 	
 	public static boolean isDebugEnabled() {
 		if (log == null) {
-			return true;
+			return LOG_LEVEL >= LOG_LEVEL_DEBUG;
 		}
 		else {
 			return log.isDebugEnabled ();
@@ -34,7 +52,9 @@ public  class LoggetFactory {
 	
 	public static void debug(CharSequence content) {
 		if (log == null) {
-			displayLog (content,null);
+			if (LOG_LEVEL >= LOG_LEVEL_DEBUG) {
+				displayLog (content,null);
+			}
 		}
 		else {
 			log.debug (content);
@@ -43,7 +63,9 @@ public  class LoggetFactory {
 	
 	public static void debug(CharSequence content, Throwable error) {
 		if (log == null) {
-			displayLog (content,error);
+			if (LOG_LEVEL >= LOG_LEVEL_DEBUG) {
+				displayLog (content,error);
+			}
 		}
 		else {
 			log.debug (content,error);
@@ -52,7 +74,9 @@ public  class LoggetFactory {
 	
 	public static void debug(Throwable error) {
 		if (log == null) {
-			displayLog (null,error);
+			if (LOG_LEVEL >= LOG_LEVEL_DEBUG) {
+				displayLog (null,error);
+			}
 		}
 		else {
 			log.debug (error);
@@ -61,7 +85,7 @@ public  class LoggetFactory {
 	
 	public static boolean isInfoEnabled() {
 		if (log == null) {
-			return true;
+			return LOG_LEVEL >= LOG_LEVEL_INFO;
 		}
 		else {
 			return log.isInfoEnabled ();
@@ -70,7 +94,9 @@ public  class LoggetFactory {
 	
 	public static void info(CharSequence content) {
 		if (log == null) {
-			displayLog (content,null);
+			if (LOG_LEVEL >= LOG_LEVEL_INFO) {
+				displayLog (content,null);
+			}
 		}
 		else {
 			log.info (content);
@@ -79,7 +105,9 @@ public  class LoggetFactory {
 	
 	public static void info(CharSequence content, Throwable error) {
 		if (log == null) {
-			displayLog (content,error);
+			if (LOG_LEVEL >= LOG_LEVEL_INFO) {
+				displayLog (content,error);
+			}
 		}
 		else {
 			log.info (content,error);
@@ -88,7 +116,9 @@ public  class LoggetFactory {
 	
 	public static void info(Throwable error) {
 		if (log == null) {
-			displayLog (null,error);
+			if (LOG_LEVEL >= LOG_LEVEL_INFO) {
+				displayLog (null,error);
+			}
 		}
 		else {
 			log.info (error);
@@ -97,7 +127,7 @@ public  class LoggetFactory {
 	
 	public static boolean isWarnEnabled() {
 		if (log == null) {
-			return true;
+			return LOG_LEVEL >= LOG_LEVEL_WARN;
 		}
 		else {
 			return log.isWarnEnabled ();
@@ -106,7 +136,9 @@ public  class LoggetFactory {
 	
 	public static void warn(CharSequence content) {
 		if (log == null) {
-			displayLog (content,null);
+			if (LOG_LEVEL >= LOG_LEVEL_WARN) {
+				displayLog (content,null);
+			}
 		}
 		else {
 			log.warn (content);
@@ -115,7 +147,9 @@ public  class LoggetFactory {
 	
 	public static void warn(CharSequence content, Throwable error) {
 		if (log == null) {
-			displayLog (content,error);
+			if (LOG_LEVEL >= LOG_LEVEL_WARN) {
+				displayLog (content,error);
+			}
 		}
 		else {
 			log.warn (content,error);
@@ -124,7 +158,9 @@ public  class LoggetFactory {
 	
 	public static void warn(Throwable error) {
 		if (log == null) {
-			displayLog (null,error);
+			if (LOG_LEVEL >= LOG_LEVEL_WARN) {
+				displayLog (null,error);
+			}
 		}
 		else {
 			log.warn (error);
@@ -133,7 +169,7 @@ public  class LoggetFactory {
 	
 	public static boolean isErrorEnabled() {
 		if (log == null) {
-			return true;
+			return LOG_LEVEL >= LOG_LEVEL_ERROR;
 		}
 		else {
 			return log.isErrorEnabled ();
@@ -142,7 +178,9 @@ public  class LoggetFactory {
 	
 	public static void error(CharSequence content) {
 		if (log == null) {
-			displayLog (content,null);
+			if (LOG_LEVEL >= LOG_LEVEL_ERROR) {
+				displayLog (content,null);
+			}
 		}
 		else {
 			log.error (content);
@@ -151,7 +189,9 @@ public  class LoggetFactory {
 	
 	public static void error(CharSequence content, Throwable error) {
 		if (log == null) {
-			displayLog (content,error);
+			if (LOG_LEVEL >= LOG_LEVEL_ERROR) {
+				displayLog (content,error);
+			}
 		}
 		else {
 			log.error (content,error);
@@ -160,14 +200,14 @@ public  class LoggetFactory {
 	
 	public static void error(Throwable error) {
 		if (log == null) {
-			displayLog (null,error);
+			if (LOG_LEVEL >= LOG_LEVEL_ERROR) {
+				displayLog (null,error);
+			}
 		}
 		else {
 			log.error (error);
 		}
 	}
-	
-	
 	
 	/**
 	 * 
@@ -177,15 +217,34 @@ public  class LoggetFactory {
 	 * @param error
 	 */
 	private static void displayLog(CharSequence content, Throwable error) {
+		if (content != null) {
+			printStream.append (content);
+		}
+		if (error != null) {
+			printStream.append (" error->:");
+			printStream.print (error);
+		}
+		printStream.println ();
 		
-		System.out.println ("content:"+content+" error:"+error);
 	}
+	
 	/**
 	 * 
 	 * 设置日志
+	 * 
 	 * @param log
 	 */
-	public static void setLogger(Log log){
-		LoggetFactory.log=log;
+	public static void setLogger(Log log) {
+		LoggetFactory.log = log;
+	}
+	
+	/**
+	 * 
+	 * 设置输出
+	 * 
+	 * @param printStream
+	 */
+	public static void setPrintStrear(PrintStream printStream) {
+		LoggetFactory.printStream = printStream;
 	}
 }
