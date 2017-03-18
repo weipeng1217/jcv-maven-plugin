@@ -159,7 +159,7 @@ public class JCVMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
     	
     	LoggetFactory.setLogger (getLog ());
-        getLog().info("===================JCV==========================");
+        getLog().info("=================================JCV====================================");
         showAsc();
         getLog().info("find suffixs size:"+suffixs.size());
         getLog().info("build webRootName:"+webRootName);
@@ -214,9 +214,10 @@ public class JCVMojo extends AbstractMojo {
        ProcessFactory processFactory=new DefaultProcessFactory(jcvConfig);
        processFactory.initJcv (webRoot);
        processFactory.doProcessPageFile ();
+       processFactory.displaySuccessInfo ();
        
         getLog().info("===============  Total time ["+(new Date().getTime()-timeStart)+" millisecond]===========================");
-        getLog().info("=============================================");
+        getLog().info("========================================================================");
     }
     
   

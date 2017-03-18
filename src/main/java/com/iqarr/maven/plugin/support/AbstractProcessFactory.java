@@ -50,6 +50,8 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	protected final static String HTML_COMMENT_LABLE_START = "<!--";
 	protected final static String HTML_COMMENT_LABLE_END = "-->";
 	
+	private final static String DISPLAY_STR="--------------------------------- ";
+	
 	/**
 	 * 配置信息
 	 */
@@ -64,6 +66,8 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	 * 所有的页面
 	 */
 	protected List<PageInfo> pages;
+	
+	private List<String> displayInfo=new ArrayList<String>();
 	
 	
 	
@@ -174,7 +178,7 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 				 
 			}
 			catch (Exception e) {
-				LoggetFactory.error ("Skip the file :" + pageInfo.getFile ().getPath (),e);
+				LoggetFactory.error (" the file process error :" + pageInfo.getFile ().getPath (),e);
 			}
 		}//for end
 		
@@ -188,7 +192,18 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	     }
 		 //处理未使用文件
 		 doCopyUntreatedFile(processSuccessFiles);
+		 displayInfo.add (DISPLAY_STR+"process success file size: "+processSuccessFiles.size ());
 	}
+	
+	
+	@Override
+	public void displaySuccessInfo(){
+		for(String info:displayInfo){
+			LoggetFactory.info (info);
+		}
+		
+	}
+	
 	/**
 	 * 
 	 * 复制MD5FileName_METHOD　文件
@@ -248,6 +263,7 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
             for (JCVFileInfo info : copyFiles) {
                 copyFileJssCss(info,jCVConfig.getOutJSCSSDirPath ());
             }
+            displayInfo.add (DISPLAY_STR+"copy untreated file file size: "+copyFiles.size ());
         }
 	}
 	
@@ -265,7 +281,7 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
             f.mkdirs();
         }
         try {
-        	LoggetFactory.info("copy not processed file:"+tempPath);
+        	LoggetFactory.debug("copy Untreated file:"+tempPath);
             FileUtils.fileChannelCopy(jcf.getFile(), new File(tempPath));
         } catch (IOException e) {
         	LoggetFactory.error("copy file error:",e);
@@ -451,7 +467,7 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	            if(null==jcf.getFinalFileName() ||  "".equals(jcf.getFinalFileName())){
 	                return;
 	            }
-	            LoggetFactory.info("copy file:"+tempPath);
+	            LoggetFactory.debug("copy md5 name  file:"+tempPath);
 	            FileUtils.fileChannelCopy(jcf.getFile(), new File(tempPath));
 	        } catch (IOException e) {
 	        	LoggetFactory.error("copy file error:",e);

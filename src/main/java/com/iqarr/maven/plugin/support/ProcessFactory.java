@@ -31,4 +31,9 @@ public interface ProcessFactory {
 	 */
 	public void doProcessPageFile();
 	
+	/**
+	 * 显示成功信息
+	 */
+	public void displaySuccessInfo();
+	
 }

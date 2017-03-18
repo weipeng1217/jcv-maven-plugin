@@ -123,6 +123,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		
 	}
 	
+	
 	/**
 	 * Check jcv is skip.
 	 *
@@ -135,7 +136,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		
 		// 不处理后缀为.min.*的文件
 		if (jcv.getFileName ().indexOf (jCVConfig.getSkipFileNameSuffix () + "." + jcv.getFileType ()) != -1) {
-			LoggetFactory.info ("The suffix min is not processed:" + jcv.getFileName ());
+			LoggetFactory.info ("The suffix is "+jCVConfig.getSkipFileNameSuffix ()+" ,not processed:" + jcv.getFileName ());
 			return true;
 		}
 		
@@ -215,7 +216,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		}
 		catch (IOException | EvaluatorException e) {
 			
-			LoggetFactory.error (e);
+			LoggetFactory.error ("file is "+jcv.toString ()+" \n ",e);
 			
 		}
 		finally {
