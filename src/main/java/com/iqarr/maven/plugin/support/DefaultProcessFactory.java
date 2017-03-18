@@ -182,7 +182,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 			
 			if (JCVFileInfo.CSS.equals (jcv.getFileType ())) {
 				
-				String tempPath = BaseUtils.getJSSCSSOutPath (jcv,true,jCVConfig.getCssMethod (),outDir);
+				String tempPath = BaseUtils.getJSSCSSOutPath (jcv,true,jCVConfig.getCssMethod (),outDir,jCVConfig);
 				File f = new File (BaseUtils.getFilePathDir (tempPath));
 				if (!f.exists ()) {
 					f.mkdirs ();
@@ -195,7 +195,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 				
 			}
 			else if (JCVFileInfo.JS.equals (jcv.getFileType ())) {
-				String tempPath = BaseUtils.getJSSCSSOutPath (jcv,true,jCVConfig.getJsMethod (),outDir);
+				String tempPath = BaseUtils.getJSSCSSOutPath (jcv,true,jCVConfig.getJsMethod (),outDir,jCVConfig);
 				File f = new File (BaseUtils.getFilePathDir (tempPath));
 				if (!f.exists ()) {
 					f.mkdirs ();
@@ -524,6 +524,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		}
 		else {
 			// 相对
+			//支持常量名称 version
 			fullLink.append (historylink);
 			if (globalPrefixPath.startsWith (HTML_URL_SEPARATOR)) {
 				fullLink.append (globalPrefixPath.replaceFirst (HTML_URL_SEPARATOR,""));

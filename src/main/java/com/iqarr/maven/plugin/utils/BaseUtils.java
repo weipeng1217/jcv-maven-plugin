@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import com.iqarr.maven.plugin.constant.JCVConstant;
+import com.iqarr.maven.plugin.domain.JCVConfig;
 import com.iqarr.maven.plugin.domain.JCVFileInfo;
 import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 
@@ -275,7 +276,7 @@ public class BaseUtils {
      * @param meth 处理方法
      * @return
      */
-    public static String getJSSCSSOutPath(final JCVFileInfo jcv,final boolean isCompression, final JCVMethodEnum meth,final String outDir ,final String ... userCompressionSuffix ) {
+    public static String getJSSCSSOutPath(final JCVFileInfo jcv,final boolean isCompression, final JCVMethodEnum meth,final String outDir ,final JCVConfig jCVConfig,final String ... userCompressionSuffix ) {
         
         StringBuilder tempPath=new StringBuilder();
         if(outDir!=null ){
@@ -297,6 +298,9 @@ public class BaseUtils {
         if (JCVFileInfo.CSS.equals(jcv.getFileType()) || JCVFileInfo.JS.equals(jcv.getFileType())) {
             
             if (meth == JCVMethodEnum.MD5FileName_METHOD ||  isCompression) {
+            	
+            	//TODO 添加alise
+            	
                 tempPath .append(replacecurrentSystemLine(jcv.getRelativelyFilePath()));
                 int lastIndexOf = tempPath.lastIndexOf(FileUtils.getSystemFileSeparator());
                 tempPath = tempPath.delete(lastIndexOf, tempPath.length()); //substring(0, lastIndexOf);

@@ -107,6 +107,36 @@ public class JCVConfig {
 	 */
 	private String skipFileNameSuffix;
 	
+	// version 6.0,兼容通用处理
+	
+	/**
+	 * js物理路径目录，该目录是指js路径的root
+	 */
+	private String jsPhysicalRootPath;
+	
+	/**
+	 * css 物理路径,该目录为css路径的root
+	 */
+	private String cssPhysicalRootPath;
+	
+	/**
+	 * js常量名称 jsConstantName/jspath
+	 */
+	private String jsConstantName;
+	
+	/**
+	 * css 常量名称  cssConstantName/csspath
+	 */
+	private String cssConstantName;
+	
+	/** web app root**/
+	private String webAppRoot;
+	
+	/** js(注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量对应的输出目录**/
+	private String jsConstantAliasPath;
+	
+	/**  css (注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量输出目录**/
+	private String cssConstantAliasPath;
 	
 	//===============================================================================================
 	
@@ -375,6 +405,104 @@ public class JCVConfig {
 	 */
 	public void setOutDirRoot(String outDirRoot) {
 		this.outDirRoot = outDirRoot;
+	}
+	/**
+	 * 获取 version 6.0兼容通用处理  js物 
+	 * @return jsPhysicalRootPath
+	 */
+	public String getJsPhysicalRootPath() {
+		return jsPhysicalRootPath;
+	}
+	/**
+	 * 设置 version 6.0兼容通用处理  js物
+	 * @param jsPhysicalRootPath version 6.0兼容通用处理  js物
+	 */
+	public void setJsPhysicalRootPath(String jsPhysicalRootPath) {
+		this.jsPhysicalRootPath = jsPhysicalRootPath;
+	}
+	/**
+	 * 获取 css 物理路径该目录为css路径的root 
+	 * @return cssPhysicalRootPath
+	 */
+	public String getCssPhysicalRootPath() {
+		return cssPhysicalRootPath;
+	}
+	/**
+	 * 设置 css 物理路径该目录为css路径的root
+	 * @param cssPhysicalRootPath css 物理路径该目录为css路径的root
+	 */
+	public void setCssPhysicalRootPath(String cssPhysicalRootPath) {
+		this.cssPhysicalRootPath = cssPhysicalRootPath;
+	}
+	/**
+	 * 获取 js常量名称 jsConstantNamejspath 
+	 * @return jsConstantName
+	 */
+	public String getJsConstantName() {
+		return jsConstantName;
+	}
+	/**
+	 * 设置 js常量名称 jsConstantNamejspath
+	 * @param jsConstantName js常量名称 jsConstantNamejspath
+	 */
+	public void setJsConstantName(String jsConstantName) {
+		this.jsConstantName = jsConstantName;
+	}
+	/**
+	 * 获取 css 常量名称  cssConstantNamecsspath 
+	 * @return cssConstantName
+	 */
+	public String getCssConstantName() {
+		return cssConstantName;
+	}
+	/**
+	 * 设置 css 常量名称  cssConstantNamecsspath
+	 * @param cssConstantName css 常量名称  cssConstantNamecsspath
+	 */
+	public void setCssConstantName(String cssConstantName) {
+		this.cssConstantName = cssConstantName;
+	}
+	/**
+	 * 获取  
+	 * @return webAppRoot
+	 */
+	public String getWebAppRoot() {
+		return webAppRoot;
+	}
+	/**
+	 * 设置 
+	 * @param webAppRoot 
+	 */
+	public void setWebAppRoot(String webAppRoot) {
+		this.webAppRoot = webAppRoot;
+	}
+	/**
+	 * 获取 js(注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量对应的输出目录 
+	 * @return jsConstantAliasPath
+	 */
+	public String getJsConstantAliasPath() {
+		return jsConstantAliasPath;
+	}
+	/**
+	 * 设置 js(注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量对应的输出目录
+	 * @param jsConstantAliasPath js(注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量对应的输出目录
+	 */
+	public void setJsConstantAliasPath(String jsConstantAliasPath) {
+		this.jsConstantAliasPath = jsConstantAliasPath;
+	}
+	/**
+	 * 获取 css (注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量输出目录 
+	 * @return cssConstantAliasPath
+	 */
+	public String getCssConstantAliasPath() {
+		return cssConstantAliasPath;
+	}
+	/**
+	 * 设置 css (注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量输出目录
+	 * @param cssConstantAliasPath css (注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量输出目录
+	 */
+	public void setCssConstantAliasPath(String cssConstantAliasPath) {
+		this.cssConstantAliasPath = cssConstantAliasPath;
 	}
 	
 	
