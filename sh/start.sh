@@ -7,8 +7,7 @@ LIB_JARS=`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "\n" ":"`
 if [ "$1" = "debug" ]; then
     JAVA_DEBUG_OPTS=" -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
 fi
-#####------config
-
+#------config 基本信息
 suffixs="html,"
 globaJsMethod="MD5FileName_METHOD"
 globaCssMethod="MD5FileName_METHOD"
@@ -22,7 +21,9 @@ clearPageComment="true"
 compressionCss="true"
 compressionJs="true"
 userCompressionSuffix="min"
-excludesCss=""
+# 多个英文逗号分隔,
+excludesJs=""
+# 多个英文逗号分隔,
 excludesCss=""
 # --------------------------------------------------------
 outJsCssRoot="/home/user/桌面/test/test/out/"
