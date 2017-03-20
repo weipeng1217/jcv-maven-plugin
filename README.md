@@ -68,15 +68,15 @@
             <!--在使用普通的模式的时候需要配置jsp html -->
             <warSourceExcludes>**/*.html,**/*.jsp,**/*.js,**/*.css</warSourceExcludes>
                  <webResources>
-						<resource>
-							<directory>${basedir}/src/main/webapp/js/common</directory>
-							<includes>
-								<include>config.js</include>
-							</includes>
-							<filtering>true</filtering>
-							<targetPath>js/common</targetPath>
-						</resource>
-			  </webResources>
+			<resource>
+				<directory>${basedir}/src/main/webapp/js/common</directory>
+				<includes>
+					<include>config.js</include>
+				</includes>
+				<filtering>true</filtering>
+				<targetPath>js/common</targetPath>
+			</resource>
+		 </webResources>
          </configuration>
        </plugin>
 ```
@@ -123,27 +123,27 @@ mvn clean package
  * 参数：
 
  ```xml
-   <suffixs>
-		<param>html</param>
-		<param>jsp</param>
-	</suffixs>
+ <suffixs>
+	<param>html</param>
+	<param>jsp</param>
+</suffixs>
  ```
 
 4. `baseJsDomin`
  * 基本js域名,在使用`<script src="http://script.iqarr.com/js/jquery/jquery/1.8.3/jquery.js"></script>`这种方式需要配置
  * 参数:
 ```xml
-   <baseJsDomin>
-		<param>http://script.iqarr.com</param>
-	</baseJsDomin>
+  <baseJsDomin>
+	<param>http://script.iqarr.com</param>
+  </baseJsDomin>
 ```
 5. `baseCssDomin`
  * 基本css域名,在使用`<link rel="stylesheet" type="text/css" href="http://style.iqarr.com/css/public.css?" />`这种方式需要配置
  * 参数:
 ```xml
    <baseCssDomin>
-		<param>http://style.iqarr.com</param>
-	</baseCssDomin>
+	<param>http://style.iqarr.com</param>
+  </baseCssDomin>
 ```
 6. `globaJslPrefixPath`
  * 全局js path路径
@@ -200,8 +200,8 @@ mvn clean package
 	* 排除js文件(只支持全路径匹配)
 ```xml
    <excludesJs>
-		<param>js/dome.js</param>
-	</excludesJs>
+	<param>js/dome.js</param>
+  </excludesJs>
 ```
 
 19. `excludesCss`
@@ -209,8 +209,8 @@ mvn clean package
 	* 排除css文件(只支持全路径匹配)
 ```xml
    <excludesCss>
-		<param>css/dome.css</param>
-	</excludesCss>
+	<param>css/dome.css</param>
+   </excludesCss>
 ```
 
 20. `yuiConfig`
