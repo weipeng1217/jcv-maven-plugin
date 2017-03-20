@@ -14,9 +14,9 @@ import com.iqarr.maven.plugin.domain.JCVConfig;
 import com.iqarr.maven.plugin.domain.JCVFileInfo;
 import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 import com.iqarr.maven.plugin.domain.PageInfo;
+import com.iqarr.maven.plugin.support.logger.LoggerFactory;
 import com.iqarr.maven.plugin.utils.BaseUtils;
 import com.iqarr.maven.plugin.utils.FileUtils;
-import com.iqarr.maven.plugin.utils.LoggetFactory;
 import com.iqarr.maven.plugin.utils.Md5Utils;
 
 /**
@@ -52,6 +52,8 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	
 	private final static String DISPLAY_STR="--------------------------------- ";
 	
+	private long  timeStart;
+	
 	/**
 	 * 配置信息
 	 */
@@ -77,6 +79,37 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	}
 	
 	
+	 /*
+	* Title: initDisplayInfo  
+	* Description:     
+	* @see com.iqarr.maven.plugin.support.ProcessFactory#initDisplayInfo()  
+	*/
+	@Override
+	public void initDisplayInfo() {
+		  LoggerFactory.info("=================================JCV====================================");
+		  LoggerFactory.info("      _  _______      __ ");
+		  LoggerFactory.info("     | |/ ____\\ \\    / / ");
+		  LoggerFactory.info("     | | |     \\ \\  / /  ");
+		  LoggerFactory.info(" _   | | |      \\ \\/ /   ");
+		  LoggerFactory.info("| |__| | |____   \\  /    ");
+		  LoggerFactory.info(" \\____/ \\_____|   \\/    ");
+		  LoggerFactory.info("                         ");
+		  LoggerFactory.info("                         ");
+	        
+		  LoggerFactory.info("find suffixs size:"+jCVConfig.getPageSuffixs ().size ());
+		 // LoggetFactory.info("build webRootName:"+jCVConfig.getOutDirRoot ());
+		  LoggerFactory.info("build sourceEncoding:"+jCVConfig.getSourceEncoding ());
+	        timeStart=new Date ().getTime ();
+	        
+	      //显示日志
+	        //LoggetFactory.info("web app Dir:"+webappDirectory.getPath());
+	        LoggerFactory.info("out Dir:"+jCVConfig.getOutDirRoot ());
+	        LoggerFactory.info("system is linux:"+FileUtils.getSystemFileSeparatorIslinux());
+	        LoggerFactory.info("css method is :"+jCVConfig.getCssMethod ());
+	        LoggerFactory.info("js method is :"+jCVConfig.getJsMethod ());
+	}
+	
+	
    /*
 	* <p>Title: initJcv</p>  
 	* <p>Description: 初始化</p>  
@@ -89,11 +122,11 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 		if(jcvFiles==null){
 			jcvFiles=new HashMap<String, JCVFileInfo> ();
 		}
-        getAllCssFile(jcvFiles,webAppRoot);
-        getAllJsFile(jcvFiles,webAppRoot);
+        getAllCssFile(jcvFiles,webAppRoot,jCVConfig);
+        getAllJsFile(jcvFiles,webAppRoot,jCVConfig);
         
         for(Entry<String, JCVFileInfo> f:jcvFiles.entrySet()){
-            LoggetFactory.debug("find type:"+f.getValue().getFileType()+" file:"+f.getKey() + " md5:"+f.getValue().getFileVersion()); 
+            LoggerFactory.debug("find type:"+f.getValue().getFileType()+" file:"+f.getKey() + " md5:"+f.getValue().getFileVersion()); 
         }
         if(pages==null){
         	pages=new ArrayList<PageInfo> ();
@@ -136,12 +169,12 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	public void doProcessPageFile() {
 		
 		if(null==jCVConfig){
-			LoggetFactory.error ("JcvConfig is null");
+			LoggerFactory.error ("JcvConfig is null");
 		}
 		// 处理成功的js css文件
 		 List<JCVFileInfo>  processSuccessFiles=new ArrayList<JCVFileInfo> ();
 		for (PageInfo pageInfo : pages) {
-			LoggetFactory.debug ("find page:" + pageInfo.getFile ().getPath ());
+			LoggerFactory.debug ("find page:" + pageInfo.getFile ().getPath ());
 			
 			try {
 				String strAll = FileUtils.readToStr (pageInfo.getFile (),jCVConfig.getSourceEncoding ());
@@ -171,14 +204,14 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 					
 				}
 				
-				LoggetFactory.debug (" page:" + pageInfo.getFile ().getName () + " Processing is complete");
+				LoggerFactory.debug (" page:" + pageInfo.getFile ().getName () + " Processing is complete");
 				FileUtils.writeFile (pageInfo.getOutFile (),jCVConfig.getSourceEncoding (),savehtml);
 				
 				
 				 
 			}
 			catch (Exception e) {
-				LoggetFactory.error (" the file process error :" + pageInfo.getFile ().getPath (),e);
+				LoggerFactory.error (" the file process error :" + pageInfo.getFile ().getPath (),e);
 			}
 		}//for end
 		
@@ -199,8 +232,11 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	@Override
 	public void displaySuccessInfo(){
 		for(String info:displayInfo){
-			LoggetFactory.info (info);
+			LoggerFactory.info (info);
 		}
+		
+		LoggerFactory.info("===============  Total time ["+(new Date().getTime()-timeStart)+" millisecond]===========================");
+		LoggerFactory.info("========================================================================");
 		
 	}
 	
@@ -275,16 +311,16 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
      */
     private void copyFileJssCss(JCVFileInfo jcf,final String outJSCSSDirPath){
         
-        String tempPath= BaseUtils.getJSSCSSOutPath(jcf,false, JCVMethodEnum.DEFAULTS_UNUSED, outJSCSSDirPath);
+        String tempPath= BaseUtils.getJSSCSSOutPath(jcf,false, JCVMethodEnum.DEFAULTS_UNUSED, outJSCSSDirPath,jCVConfig);
         File f = new File( BaseUtils.getFilePathDir(tempPath));
         if (!f.exists()) {
             f.mkdirs();
         }
         try {
-        	LoggetFactory.debug("copy Untreated file:"+tempPath);
+        	LoggerFactory.debug("copy Untreated file:"+tempPath);
             FileUtils.fileChannelCopy(jcf.getFile(), new File(tempPath));
         } catch (IOException e) {
-        	LoggetFactory.error("copy file error:",e);
+        	LoggerFactory.error("copy file error:",e);
         }
         
         
@@ -297,30 +333,36 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
      * 获取全部js文件
      * @param collected
      */
-	private void getAllJsFile(Map<String,JCVFileInfo> collected,final String rootPath){
+	private void getAllJsFile(Map<String,JCVFileInfo> collected,final String rootPath,final JCVConfig jcvConfig){
         if(collected==null){
             collected=new HashMap<String,JCVFileInfo>();
         }
-        String webRoot=rootPath;
+        String jsRoot="";
+        if(null!=jcvConfig.getJsPhysicalRootPath ()&& !"".equals (jcvConfig.getJsPhysicalRootPath ())){
+        	jsRoot=jcvConfig.getJsPhysicalRootPath ();
+        }else {
+        	jsRoot=rootPath;
+        }
+        
         List<String > su=new ArrayList<String>();
         su.add("js");
         String globaJslPrefixPath=jCVConfig.getGlobaJslPrefixPath ();
         if ( globaJslPrefixPath!= null && !"".equals(globaJslPrefixPath)) {
-            if (webRoot.endsWith(FileUtils.getSystemFileSeparator())) {
-                webRoot+=globaJslPrefixPath;
+            if (jsRoot.endsWith(FileUtils.getSystemFileSeparator())) {
+                jsRoot+=globaJslPrefixPath;
             }else {
-                webRoot+=FileUtils.getSystemFileSeparator()+globaJslPrefixPath;
+                jsRoot+=FileUtils.getSystemFileSeparator()+globaJslPrefixPath;
             }
         }
-        if (!webRoot.endsWith(FileUtils.getSystemFileSeparator())) {
-            webRoot+=FileUtils.getSystemFileSeparator();
+        if (!jsRoot.endsWith(FileUtils.getSystemFileSeparator())) {
+            jsRoot+=FileUtils.getSystemFileSeparator();
         }
         List<File> listFile=new ArrayList<File>();
-        FileUtils.collectFiles(listFile, new File(webRoot), su);
+        FileUtils.collectFiles(listFile, new File(jsRoot), su);
         JCVFileInfo jcv=null;
         for(File f:listFile){
             String path = f.getPath();
-            path=path.substring(webRoot.length(), path.length());
+            path=path.substring(jsRoot.length(), path.length());
             if(jcv==null){
                 jcv=new JCVFileInfo();
             }
@@ -335,9 +377,13 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 				jcv.setFileHashKey (BaseUtils.getFileHashKey (f,JCVConstant.FILE_HASH_MD5));
 			}
 			catch (Exception e) {
-				LoggetFactory.error (e);
+				LoggerFactory.error (e);
 			}
             jcv.setFile(f);
+            //version 6.0
+            if(null!=jcvConfig.getJsConstantName () &&!"".equals (jcvConfig.getJsConstantName ())){
+            	path=jcvConfig.getJsConstantName ()+JCVConstant.HTML_PATH_SEPARATED+path;
+            }
             collected.put(path, jcv);
             jcv=null;
         }
@@ -347,31 +393,36 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
      * 获取全部css文件
      * @param collected
      */
-    private void getAllCssFile(Map<String,JCVFileInfo> collected,final String rootPath){
+    private void getAllCssFile(Map<String,JCVFileInfo> collected,final String rootPath,final JCVConfig jcvConfig){
         if(collected==null){
             collected=new HashMap<String,JCVFileInfo>();
         }
-        String webRoot=rootPath;
+        String cssRoot="";
+        if(null!=jcvConfig.getCssPhysicalRootPath () && !"".equals (jcvConfig.getCssPhysicalRootPath ())){
+        	cssRoot=jcvConfig.getCssPhysicalRootPath ();
+        }else {
+        	 cssRoot=rootPath;
+        }
         List<String > su=new ArrayList<String>();
         su.add("css");
        String  globaCsslPrefixPath=jCVConfig.getGlobaCsslPrefixPath ();
         if (globaCsslPrefixPath != null && !"".equals(globaCsslPrefixPath)) {
-            if (webRoot.endsWith(FileUtils.getSystemFileSeparator())) {
-                webRoot+=globaCsslPrefixPath;
+            if (cssRoot.endsWith(FileUtils.getSystemFileSeparator())) {
+                cssRoot+=globaCsslPrefixPath;
             }else {
-                webRoot+=FileUtils.getSystemFileSeparator()+globaCsslPrefixPath;
+                cssRoot+=FileUtils.getSystemFileSeparator()+globaCsslPrefixPath;
             }
         }
-        if (!webRoot.endsWith(FileUtils.getSystemFileSeparator())) {
-            webRoot+=FileUtils.getSystemFileSeparator();
+        if (!cssRoot.endsWith(FileUtils.getSystemFileSeparator())) {
+            cssRoot+=FileUtils.getSystemFileSeparator();
         }
         List<File> listFile=new ArrayList<File>();
-        FileUtils.collectFiles(listFile, new File(webRoot), su);
+        FileUtils.collectFiles(listFile, new File(cssRoot), su);
         JCVFileInfo jcv=null;
         for(File f:listFile){
             String path = f.getPath();
            // path= path.replaceFirst(webRoot, "");
-              path=path.substring(webRoot.length(), path.length());
+              path=path.substring(cssRoot.length(), path.length());
             if(jcv==null){
                 jcv=new JCVFileInfo();
             }
@@ -387,8 +438,12 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 				jcv.setFileHashKey (BaseUtils.getFileHashKey (f,JCVConstant.FILE_HASH_MD5));
 			}
 			catch (Exception e) {
-				LoggetFactory.error (e);
+				LoggerFactory.error (e);
 			}
+            //version 6.0
+            if(null!=jcvConfig.getCssConstantName () &&!"".equals (jcvConfig.getCssConstantName ())){
+            	path=jcvConfig.getCssConstantName ()+JCVConstant.HTML_PATH_SEPARATED+path;
+            }
             collected.put(path, jcv);
             jcv=null;
         }
@@ -441,7 +496,7 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
                    
             }
         } catch (Exception e) {
-           LoggetFactory.info(e.getMessage());
+           LoggerFactory.info(e.getMessage());
         }
         return new Date ().getTime ()+"";
        
@@ -457,7 +512,7 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	private  void copyMd5FileNameJssCss(JCVFileInfo jcf,final String outJSCSSDirPath){
 	        
 	      
-	        String tempPath= BaseUtils.getJSSCSSOutPath(jcf,true, JCVMethodEnum.MD5FileName_METHOD, outJSCSSDirPath);
+	        String tempPath= BaseUtils.getJSSCSSOutPath(jcf,true, JCVMethodEnum.MD5FileName_METHOD, outJSCSSDirPath,jCVConfig);
 	        File f = new File( BaseUtils.getFilePathDir(tempPath));
 	        if (!f.exists()) {
 	            f.mkdirs();
@@ -467,10 +522,10 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	            if(null==jcf.getFinalFileName() ||  "".equals(jcf.getFinalFileName())){
 	                return;
 	            }
-	            LoggetFactory.debug("copy md5 name  file:"+tempPath);
+	            LoggerFactory.debug("copy md5 name  file:"+tempPath);
 	            FileUtils.fileChannelCopy(jcf.getFile(), new File(tempPath));
 	        } catch (IOException e) {
-	        	LoggetFactory.error("copy file error:",e);
+	        	LoggerFactory.error("copy file error:",e);
 	        }
 	        
 	        

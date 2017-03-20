@@ -1,7 +1,6 @@
 package com.iqarr.maven.plugin;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -16,8 +15,9 @@ import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 import com.iqarr.maven.plugin.domain.YUIConfig;
 import com.iqarr.maven.plugin.support.DefaultProcessFactory;
 import com.iqarr.maven.plugin.support.ProcessFactory;
+import com.iqarr.maven.plugin.support.logger.LoggerFactory;
+import com.iqarr.maven.plugin.support.logger.MavenLoger;
 import com.iqarr.maven.plugin.utils.FileUtils;
-import com.iqarr.maven.plugin.utils.LoggetFactory;
 
 /**  
 * @Package 
@@ -37,8 +37,6 @@ import com.iqarr.maven.plugin.utils.LoggetFactory;
 public class JCVMojo extends AbstractMojo {
     
     
-    /** 启动时间**/
-    private long timeStart=0;
     
     /**
      * 输出文件目录
@@ -158,23 +156,9 @@ public class JCVMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
     	
-    	LoggetFactory.setLogger (getLog ());
-        getLog().info("=================================JCV====================================");
-        showAsc();
-        getLog().info("find suffixs size:"+suffixs.size());
-        getLog().info("build webRootName:"+webRootName);
-        getLog().info("build sourceEncoding:"+sourceEncoding);
-        timeStart=new Date ().getTime ();
+    	LoggerFactory.buildLogerFactory (new  MavenLoger(getLog ()));
         
-      //显示日志
-        getLog().info("web app Dir:"+webappDirectory.getPath());
-        getLog().info("out Dir:"+outputDirectory.getPath());
-        getLog().info("system is linux:"+FileUtils.getSystemFileSeparatorIslinux());
-        getLog().info("css method is :"+globaCssMethod.getMethod());
-        getLog().info("js method is :"+globaJsMethod.getMethod());
-        
-        
-       
+
         String webRoot=webappDirectory.getPath();
         if(!webRoot.endsWith(FileUtils.getSystemLineSpearator())){
             webRoot+=FileUtils.getSystemFileSeparator();
@@ -212,23 +196,17 @@ public class JCVMojo extends AbstractMojo {
         String out= outputDirectory.getPath()+FileUtils.getSystemFileSeparator()+webRootName;
         jcvConfig.setOutDirRoot (out);
        ProcessFactory processFactory=new DefaultProcessFactory(jcvConfig);
+       processFactory.initDisplayInfo ();
+       getLog().info("build webRootName:"+webRootName);
+       //显示日志
+        getLog().info("web app Dir:"+webappDirectory.getPath());
        processFactory.initJcv (webRoot);
        processFactory.doProcessPageFile ();
        processFactory.displaySuccessInfo ();
        
-        getLog().info("===============  Total time ["+(new Date().getTime()-timeStart)+" millisecond]===========================");
-        getLog().info("========================================================================");
+        
     }
     
   
-    public void showAsc(){
-        getLog().info("      _  _______      __ ");
-        getLog().info("     | |/ ____\\ \\    / / ");
-        getLog().info("     | | |     \\ \\  / /  ");
-        getLog().info(" _   | | |      \\ \\/ /   ");
-        getLog().info("| |__| | |____   \\  /    ");
-        getLog().info(" \\____/ \\_____|   \\/    ");
-        getLog().info("                         ");
-        getLog().info("                         ");
-    }
+    
 }

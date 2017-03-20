@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import com.iqarr.maven.plugin.constant.JCVConstant;
+import com.iqarr.maven.plugin.domain.JCVConfig;
 import com.iqarr.maven.plugin.domain.JCVFileInfo;
 import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 
@@ -275,7 +276,7 @@ public class BaseUtils {
      * @param meth 处理方法
      * @return
      */
-    public static String getJSSCSSOutPath(final JCVFileInfo jcv,final boolean isCompression, final JCVMethodEnum meth,final String outDir ,final String ... userCompressionSuffix ) {
+    public static String getJSSCSSOutPath(final JCVFileInfo jcv,final boolean isCompression, final JCVMethodEnum meth,final String outDir ,final JCVConfig jCVConfig,final String ... userCompressionSuffix ) {
         
         StringBuilder tempPath=new StringBuilder();
         if(outDir!=null ){
@@ -284,6 +285,36 @@ public class BaseUtils {
         if (!outDir.endsWith(FileUtils.getSystemFileSeparator())) {
             tempPath.append(FileUtils.getSystemFileSeparator());
         }
+        
+      //添加alise
+    	if(JCVFileInfo.CSS.equals(jcv.getFileType())
+    					&& (null!=jCVConfig.getCssConstantName ()&& !"".equals (jCVConfig.getCssConstantName ()) )){
+    		if(null!=jCVConfig.getCssConstantAliasPath () && !"".equals (jCVConfig.getCssConstantAliasPath ())){
+    			if(jCVConfig.getCssConstantAliasPath ().startsWith ("/")){
+    				tempPath.append(jCVConfig.getCssConstantAliasPath ().substring (1,jCVConfig.getCssConstantAliasPath ().length ()));
+    			}else {
+    				tempPath.append(jCVConfig.getCssConstantAliasPath ());
+    			}
+    			if(!jCVConfig.getCssConstantAliasPath ().endsWith ("/")){
+    				tempPath.append(FileUtils.getSystemFileSeparator());
+    			}
+    			
+    		}
+    	}else if(JCVFileInfo.JS.equals(jcv.getFileType()) && 
+    					(null!=jCVConfig.getCssConstantName () && !"".equals (jCVConfig.getCssConstantName ()))) {
+    		if(null!=jCVConfig.getJsConstantAliasPath () && !"".equals (jCVConfig.getJsConstantAliasPath ())){
+    			
+    			if(jCVConfig.getJsConstantAliasPath ().startsWith ("/")){
+    				tempPath.append(jCVConfig.getJsConstantAliasPath ().substring (1,jCVConfig.getJsConstantAliasPath ().length()));
+    			}else {
+    				tempPath.append(jCVConfig.getJsConstantAliasPath ());
+    			}
+    			if(!jCVConfig.getJsConstantAliasPath ().endsWith ("/")){
+    				tempPath.append(FileUtils.getSystemFileSeparator());
+    			 }
+    		}
+    	}
+
         if (meth == JCVMethodEnum.DEFAULTS_UNUSED) {
             if (outDir.endsWith(FileUtils.getSystemFileSeparator())) {
                 tempPath.append(replacecurrentSystemLine(jcv.getRelativelyFilePath()));
@@ -297,6 +328,9 @@ public class BaseUtils {
         if (JCVFileInfo.CSS.equals(jcv.getFileType()) || JCVFileInfo.JS.equals(jcv.getFileType())) {
             
             if (meth == JCVMethodEnum.MD5FileName_METHOD ||  isCompression) {
+            	
+            	
+            	
                 tempPath .append(replacecurrentSystemLine(jcv.getRelativelyFilePath()));
                 int lastIndexOf = tempPath.lastIndexOf(FileUtils.getSystemFileSeparator());
                 tempPath = tempPath.delete(lastIndexOf, tempPath.length()); //substring(0, lastIndexOf);

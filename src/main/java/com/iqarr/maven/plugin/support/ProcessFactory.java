@@ -16,6 +16,8 @@ package com.iqarr.maven.plugin.support;
  */
 public interface ProcessFactory {
 	
+	public void initDisplayInfo();
+	
 	/**
 	 * 
 	 * init

@@ -51,6 +51,9 @@ public class FileUtils {
             }
         } else {
             // 如果是目录，则遍历子文件或者子目录，递归查找
+        	if(null==file.listFiles ()){
+        		return;
+        	}
             for (File sub : file.listFiles()) {
                 collectFiles(collected, sub, includes);
             }

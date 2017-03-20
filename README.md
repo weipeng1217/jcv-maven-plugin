@@ -20,7 +20,7 @@
 <plugin>
 	<groupId>com.iqarr.maven.plugin</groupId>
 	<artifactId>jcv-maven-plugin</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6</version>
 		<executions>
 			<execution>
 			<id>process</id>
@@ -83,9 +83,18 @@
 ### 打包
 
 ```
-	mvn clean package
+mvn clean package
 # 注意该插件不会在eclipse中生效，在package后才会生效
 ```
+
+### 新版本特性
+
+`version 0.0.6`
+  1. 优化整个压缩流程.
+  2. 修复部分bug
+  3. 添加通用模块支持，支持对php等其他语言处理．
+  4. 添加常量名称支持.
+
 
 ### 注意事项
 
@@ -224,3 +233,24 @@
 
 	* 跳过文件名后缀(后缀之前的名称)，例如：　ok.min.js 如果想跳过就需要配置`.min`
 	* 默认:`.min`
+22. `jsPhysicalRootPath`
+
+  * js物理路径目录，该目录是指js路径的root
+23. `cssPhysicalRootPath`
+
+  * cssPhysicalRootPath
+24. `jsConstantName`
+
+  * js常量名称 `jsConstantName/jspath`
+25. `cssConstantName`
+
+  * css 常量名称  `cssConstantName/csspath`
+26. webAppRoot
+
+  * app root目录
+27. `jsConstantAliasPath`
+
+  * js(注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量对应的输出目录
+28. `cssConstantAliasPath`
+
+  * css (注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量输出目录

@@ -23,8 +23,8 @@ import com.iqarr.maven.plugin.domain.JCVConfig;
 import com.iqarr.maven.plugin.domain.JCVFileInfo;
 import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 import com.iqarr.maven.plugin.exception.YUIException;
+import com.iqarr.maven.plugin.support.logger.LoggerFactory;
 import com.iqarr.maven.plugin.utils.BaseUtils;
-import com.iqarr.maven.plugin.utils.LoggetFactory;
 import com.yahoo.platform.yui.compressor.CssCompressor;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 
@@ -69,12 +69,12 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 	@Override
 	public void processCompressionJsCss(List<JCVFileInfo> processFiles, String outDir, JCVConfig jCVConfig) {
 		
-		LoggetFactory.debug ("CompressionJsCss outDir:" + outDir);
+		LoggerFactory.debug ("CompressionJsCss outDir:" + outDir);
 		if (processFiles == null) {
-			LoggetFactory.debug ("Compression processFiles is null ");
+			LoggerFactory.debug ("Compression processFiles is null ");
 			return;
 		}
-		LoggetFactory.debug ("Compression find file size:" + processFiles.size ());
+		LoggerFactory.debug ("Compression find file size:" + processFiles.size ());
 		
 		boolean compression = false;
 		
@@ -113,7 +113,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 					continue;
 				}
 				
-				LoggetFactory.debug ("process file:" + jcv.getFileName () + "   index:" + i);
+				LoggerFactory.debug ("process file:" + jcv.getFileName () + "   index:" + i);
 				doProcessCompressionJsCss (jcv,skipFileNameSuffix,jCVConfig.getSourceEncoding (),outDir,jCVConfig);
 				isProcessFile.put (jcv,true);
 				
@@ -136,7 +136,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		
 		// 不处理后缀为.min.*的文件
 		if (jcv.getFileName ().indexOf (jCVConfig.getSkipFileNameSuffix () + "." + jcv.getFileType ()) != -1) {
-			LoggetFactory.info ("The suffix is "+jCVConfig.getSkipFileNameSuffix ()+" ,not processed:" + jcv.getFileName ());
+			LoggerFactory.info ("The suffix is "+jCVConfig.getSkipFileNameSuffix ()+" ,not processed:" + jcv.getFileName ());
 			return true;
 		}
 		
@@ -145,7 +145,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 			if (jCVConfig.getExcludesCss () != null
 			                && checkStrIsInList (jcv.getRelativelyFilePath (),jCVConfig.getExcludesCss (),true)) {
 				
-				LoggetFactory.info ("The file  is not processed:" + jcv.getFileName ());
+				LoggerFactory.info ("The file  is not processed:" + jcv.getFileName ());
 				return true;
 			}
 			
@@ -153,12 +153,12 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		else if (JCVFileInfo.JS.equals (jcv.getFileType ())) {
 			if (jCVConfig.getExcludesJs () != null
 			                && checkStrIsInList (jcv.getRelativelyFilePath (),jCVConfig.getExcludesJs (),true)) {
-				LoggetFactory.info ("The file  is not processed:" + jcv.getFileName ());
+				LoggerFactory.info ("The file  is not processed:" + jcv.getFileName ());
 				return true;
 			}
 		}
 		else {
-			LoggetFactory.error ("file type error :" + jcv.getFileType ());
+			LoggerFactory.error ("file type error :" + jcv.getFileType ());
 			return true;
 		}
 		
@@ -182,7 +182,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 			
 			if (JCVFileInfo.CSS.equals (jcv.getFileType ())) {
 				
-				String tempPath = BaseUtils.getJSSCSSOutPath (jcv,true,jCVConfig.getCssMethod (),outDir);
+				String tempPath = BaseUtils.getJSSCSSOutPath (jcv,true,jCVConfig.getCssMethod (),outDir,jCVConfig);
 				File f = new File (BaseUtils.getFilePathDir (tempPath));
 				if (!f.exists ()) {
 					f.mkdirs ();
@@ -195,7 +195,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 				
 			}
 			else if (JCVFileInfo.JS.equals (jcv.getFileType ())) {
-				String tempPath = BaseUtils.getJSSCSSOutPath (jcv,true,jCVConfig.getJsMethod (),outDir);
+				String tempPath = BaseUtils.getJSSCSSOutPath (jcv,true,jCVConfig.getJsMethod (),outDir,jCVConfig);
 				File f = new File (BaseUtils.getFilePathDir (tempPath));
 				if (!f.exists ()) {
 					f.mkdirs ();
@@ -210,13 +210,13 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 				
 			}
 			else {
-				LoggetFactory.error ("file type error :" + jcv.getFileType () + " fileIfo:" + jcv.toString ());
+				LoggerFactory.error ("file type error :" + jcv.getFileType () + " fileIfo:" + jcv.toString ());
 			}
 			
 		}
 		catch (IOException | EvaluatorException e) {
 			
-			LoggetFactory.error ("file is "+jcv.toString ()+" \n ",e);
+			LoggerFactory.error ("file is "+jcv.toString ()+" \n ",e);
 			
 		}
 		finally {
@@ -231,7 +231,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 				}
 			}
 			catch (IOException e) {
-				LoggetFactory.error (e);
+				LoggerFactory.error (e);
 			}
 		}
 	}
@@ -323,7 +323,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		// if(dp.getStartPos())
 		int checkIndex = dp.getStartPos () + HTML_COMMENT_LABLE_START.length ();
 		String substring = sb.substring (checkIndex,checkIndex + 1);
-		if (substring != null || "[".equals (substring)) {
+		if (substring != null && "[".equals (substring)) {
 			index = dp.getEndPos () == -1 ? -1 : dp.getEndPos ();
 			return processPageComment (sb,index,jCVConfig);
 		}
@@ -410,13 +410,13 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 			checkEndLable = HTML_JAVASCRIPT_END;
 		}
 		else {
-			LoggetFactory.error ("file type error :" + fileType);
+			LoggerFactory.error ("file type error :" + fileType);
 		}
 		
 		getHtmllabDocposition (html,dp);
 		if (dp.getEndPos () == -1 || !dp.isFindIt ()) {
 			if (index < html.length () && dp.getStartPos () != -1) {
-				return processCSSVersion (html,dp.getStartPos () + heardLenth + 1,processSuccessFiles,jCVConfig); // index+
+				return	processVersion (html,dp.getStartPos () + heardLenth + 1,processSuccessFiles,fileType,jCVConfig);
 			}
 			else {
 				return -1;
@@ -452,7 +452,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		System.arraycopy (cas,dpsrc.getStartPos () + 1,links,0,length);
 		String link = new String (links);
 		
-		LoggetFactory.debug ("find " + fileType + " link:" + link);
+		LoggerFactory.debug ("find " + fileType + " link:" + link);
 		
 		processlink (html,dpsrc.getStartPos () - 1,dpsrc.getEndPos () - 1,link,fileType,processSuccessFiles,jCVConfig);
 		
@@ -489,7 +489,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 			baseDomin = jCVConfig.getBaseJsDomin ();
 		}
 		else {
-			LoggetFactory.error ("file type error :" + fileType);
+			LoggerFactory.error ("file type error :" + fileType);
 		}
 		
 		if (historylink.startsWith (JCVConstant.HTTP_START_HEARD)
@@ -524,6 +524,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		}
 		else {
 			// 相对
+			//支持常量名称 version
 			fullLink.append (historylink);
 			if (globalPrefixPath.startsWith (HTML_URL_SEPARATOR)) {
 				fullLink.append (globalPrefixPath.replaceFirst (HTML_URL_SEPARATOR,""));
@@ -561,7 +562,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 	private void instatVersion(StringBuffer sb, final int start, final int end, final String historylink, String fullLink, JCVFileInfo jcvFileInfo, List<JCVFileInfo> processSuccessFiles, JCVConfig jCVConfig) {
 		if (jcvFileInfo != null) {
 			
-			LoggetFactory.debug ("process link:" + historylink);
+			LoggerFactory.debug ("process link:" + historylink);
 			
 			// version 0.0.2
 			boolean isReplace = false;
@@ -583,7 +584,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 								isReplace = true;
 							}
 							else {
-								LoggetFactory.warn (" not support method method:" + jCVConfig.getCssMethod ().name ());
+								LoggerFactory.warn (" not support method method:" + jCVConfig.getCssMethod ().name ());
 							}
 						}
 						else {
@@ -599,7 +600,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 								                .getUserCompressionSuffix (),historylink,processSuccessFiles,jCVConfig);
 							}
 							else {
-								LoggetFactory.warn (" not support method method:" + jCVConfig.getCssMethod ().name ());
+								LoggerFactory.warn (" not support method method:" + jCVConfig.getCssMethod ().name ());
 							}
 							isReplace = true;
 						}
@@ -617,13 +618,13 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 							isReplace = true;
 						}
 						else {
-							LoggetFactory.warn (" not support method method:" + jCVConfig.getCssMethod ().name ());
+							LoggerFactory.warn (" not support method method:" + jCVConfig.getCssMethod ().name ());
 						}
 					}
 				}
 				else {
 					
-					LoggetFactory.debug (" skip file :" + jcvFileInfo.getFileType ());
+					LoggerFactory.debug (" skip file :" + jcvFileInfo.getFileType ());
 					
 				}
 			}
@@ -643,7 +644,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 								isReplace = true;
 							}
 							else {
-								LoggetFactory.warn (" not support method method:" + jCVConfig.getJsMethod ().name ());
+								LoggerFactory.warn (" not support method method:" + jCVConfig.getJsMethod ().name ());
 							}
 						}
 						else {
@@ -659,7 +660,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 								                .getUserCompressionSuffix (),historylink,processSuccessFiles,jCVConfig);
 							}
 							else {
-								LoggetFactory.warn (" not support method method:" + jCVConfig.getJsMethod ().name ());
+								LoggerFactory.warn (" not support method method:" + jCVConfig.getJsMethod ().name ());
 							}
 							isReplace = true;
 						}
@@ -678,20 +679,20 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 						}
 						else {
 							
-							LoggetFactory.warn (" not support method method:" + jCVConfig.getJsMethod ().name ());
+							LoggerFactory.warn (" not support method method:" + jCVConfig.getJsMethod ().name ());
 							
 						}
 					}
 				}
 				else {
 					
-					LoggetFactory.debug (" break file :" + jcvFileInfo.getFileType ());
+					LoggerFactory.debug (" break file :" + jcvFileInfo.getFileType ());
 					
 				}
 			}
 			else {
 				
-				LoggetFactory.warn (" not support file type:" + jcvFileInfo.getFileType ());
+				LoggerFactory.warn (" not support file type:" + jcvFileInfo.getFileType ());
 				
 			}
 			
