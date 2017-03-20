@@ -1,8 +1,9 @@
 package com.iqarr.maven.plugin.exception;
 
-import com.iqarr.maven.plugin.utils.LoggetFactory;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
+
+import com.iqarr.maven.plugin.support.logger.LoggerFactory;
 
 /**  
 * @Package 
@@ -47,11 +48,11 @@ public class YUIException implements ErrorReporter {
     public void error(String message, String sourceName,
                     int line, String lineSource, int lineOffset) {
         
-        	LoggetFactory.error("\n[ERROR] in  "+fileName);
+        	LoggerFactory.error("\n[ERROR] in  "+fileName);
             if (line < 0) {
-            	LoggetFactory.error("  " + message);
+            	LoggerFactory.error("  " + message);
             } else {
-            	LoggetFactory.error("  " + line + ':' + lineOffset + ':' + message);
+            	LoggerFactory.error("  " + line + ':' + lineOffset + ':' + message);
             }
         
     }
@@ -90,11 +91,11 @@ public class YUIException implements ErrorReporter {
     @Override
     public void warning(String message, String sourceName,
                     int line, String lineSource, int lineOffset) {
-    		LoggetFactory.warn("\n[WARNING] in  "+fileName);
+    		LoggerFactory.warn("\n[WARNING] in  "+fileName);
             if (line < 0) {
-            	LoggetFactory.warn("  " + message);
+            	LoggerFactory.warn("  " + message);
             } else {
-            	LoggetFactory.warn("  " + line + ':' + lineOffset + ':' + message);
+            	LoggerFactory.warn("  " + line + ':' + lineOffset + ':' + message);
             }
         
         

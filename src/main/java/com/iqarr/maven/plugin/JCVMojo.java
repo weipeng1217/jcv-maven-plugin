@@ -15,8 +15,9 @@ import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 import com.iqarr.maven.plugin.domain.YUIConfig;
 import com.iqarr.maven.plugin.support.DefaultProcessFactory;
 import com.iqarr.maven.plugin.support.ProcessFactory;
+import com.iqarr.maven.plugin.support.logger.LoggerFactory;
+import com.iqarr.maven.plugin.support.logger.MavenLoger;
 import com.iqarr.maven.plugin.utils.FileUtils;
-import com.iqarr.maven.plugin.utils.LoggetFactory;
 
 /**  
 * @Package 
@@ -155,7 +156,7 @@ public class JCVMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
     	
-    	LoggetFactory.setLogger (getLog ());
+    	LoggerFactory.buildLogerFactory (new  MavenLoger(getLog ()));
         
 
         String webRoot=webappDirectory.getPath();

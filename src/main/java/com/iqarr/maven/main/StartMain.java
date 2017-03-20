@@ -12,7 +12,8 @@ import com.iqarr.maven.plugin.domain.JCVMethodEnum;
 import com.iqarr.maven.plugin.domain.YUIConfig;
 import com.iqarr.maven.plugin.support.DefaultProcessFactory;
 import com.iqarr.maven.plugin.support.ProcessFactory;
-import com.iqarr.maven.plugin.utils.LoggetFactory;
+import com.iqarr.maven.plugin.support.logger.LoggerFactory;
+import com.iqarr.maven.plugin.support.logger.SystemLogger;
 
 /**
  * @Package
@@ -73,13 +74,13 @@ public class StartMain {
 		 * cssConstantAliasPath
 		 */
 		
-		LoggetFactory.setPrintStrear (System.out);
+		LoggerFactory.buildLogerFactory (new SystemLogger ());
 		
 		
 		JCVConfig jcvConfig = new JCVConfig ();
 		processArge (args,jcvConfig);
-		LoggetFactory.info ("\n");
-		LoggetFactory.info ("config is:" + jcvConfig.toString ());
+		LoggerFactory.info ("\n");
+		LoggerFactory.info ("config is:" + jcvConfig.toString ());
 		
 		ProcessFactory processFactory = new DefaultProcessFactory (jcvConfig);
 		processFactory.initDisplayInfo ();
