@@ -50,8 +50,6 @@ public class JCVFileInfo {
     
     /** 文件hash 值**/
     private String fileHashKey;
-        
-
     /**
      * 获取 相对文件路径 
      * @return relativelyFilePath
