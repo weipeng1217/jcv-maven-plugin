@@ -83,9 +83,14 @@
 ### 打包
 
 ```
-	mvn clean package
+mvn clean package
 # 注意该插件不会在eclipse中生效，在package后才会生效
 ```
+
+### 新版本特性
+
+`version 0.0.6`
+  1. 优化整个压缩流程
 
 ### 注意事项
 

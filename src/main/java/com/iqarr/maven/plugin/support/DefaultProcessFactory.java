@@ -323,7 +323,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		// if(dp.getStartPos())
 		int checkIndex = dp.getStartPos () + HTML_COMMENT_LABLE_START.length ();
 		String substring = sb.substring (checkIndex,checkIndex + 1);
-		if (substring != null || "[".equals (substring)) {
+		if (substring != null && "[".equals (substring)) {
 			index = dp.getEndPos () == -1 ? -1 : dp.getEndPos ();
 			return processPageComment (sb,index,jCVConfig);
 		}
@@ -416,7 +416,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 		getHtmllabDocposition (html,dp);
 		if (dp.getEndPos () == -1 || !dp.isFindIt ()) {
 			if (index < html.length () && dp.getStartPos () != -1) {
-				return processCSSVersion (html,dp.getStartPos () + heardLenth + 1,processSuccessFiles,jCVConfig); // index+
+				return	processVersion (html,dp.getStartPos () + heardLenth + 1,processSuccessFiles,fileType,jCVConfig);
 			}
 			else {
 				return -1;

@@ -285,6 +285,36 @@ public class BaseUtils {
         if (!outDir.endsWith(FileUtils.getSystemFileSeparator())) {
             tempPath.append(FileUtils.getSystemFileSeparator());
         }
+        
+      //添加alise
+    	if(JCVFileInfo.CSS.equals(jcv.getFileType())
+    					&& (null!=jCVConfig.getCssConstantName ()&& !"".equals (jCVConfig.getCssConstantName ()) )){
+    		if(null!=jCVConfig.getCssConstantAliasPath () && !"".equals (jCVConfig.getCssConstantAliasPath ())){
+    			if(jCVConfig.getCssConstantAliasPath ().startsWith ("/")){
+    				tempPath.append(jCVConfig.getCssConstantAliasPath ().substring (1,jCVConfig.getCssConstantAliasPath ().length ()));
+    			}else {
+    				tempPath.append(jCVConfig.getCssConstantAliasPath ());
+    			}
+    			if(!jCVConfig.getCssConstantAliasPath ().endsWith ("/")){
+    				tempPath.append(FileUtils.getSystemFileSeparator());
+    			}
+    			
+    		}
+    	}else if(JCVFileInfo.JS.equals(jcv.getFileType()) && 
+    					(null!=jCVConfig.getCssConstantName () && !"".equals (jCVConfig.getCssConstantName ()))) {
+    		if(null!=jCVConfig.getJsConstantAliasPath () && !"".equals (jCVConfig.getJsConstantAliasPath ())){
+    			
+    			if(jCVConfig.getJsConstantAliasPath ().startsWith ("/")){
+    				tempPath.append(jCVConfig.getJsConstantAliasPath ().substring (1,jCVConfig.getJsConstantAliasPath ().length()));
+    			}else {
+    				tempPath.append(jCVConfig.getJsConstantAliasPath ());
+    			}
+    			if(!jCVConfig.getJsConstantAliasPath ().endsWith ("/")){
+    				tempPath.append(FileUtils.getSystemFileSeparator());
+    			 }
+    		}
+    	}
+
         if (meth == JCVMethodEnum.DEFAULTS_UNUSED) {
             if (outDir.endsWith(FileUtils.getSystemFileSeparator())) {
                 tempPath.append(replacecurrentSystemLine(jcv.getRelativelyFilePath()));
@@ -299,7 +329,7 @@ public class BaseUtils {
             
             if (meth == JCVMethodEnum.MD5FileName_METHOD ||  isCompression) {
             	
-            	//TODO 添加alise
+            	
             	
                 tempPath .append(replacecurrentSystemLine(jcv.getRelativelyFilePath()));
                 int lastIndexOf = tempPath.lastIndexOf(FileUtils.getSystemFileSeparator());

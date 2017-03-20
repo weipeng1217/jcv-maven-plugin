@@ -1,6 +1,14 @@
 #!/bin/sh
 
 
+DEPLOY_DIR=`pwd`
+LIB_DIR=$DEPLOY_DIR/lib
+LIB_JARS=`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "\n" ":"`
+if [ "$1" = "debug" ]; then
+    JAVA_DEBUG_OPTS=" -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y"
+fi
+#####------config
+
 suffixs="html,"
 globaJsMethod="MD5FileName_METHOD"
 globaCssMethod="MD5FileName_METHOD"
@@ -17,16 +25,18 @@ userCompressionSuffix="min"
 excludesCss=""
 excludesCss=""
 # --------------------------------------------------------
-outJsCssRoot="/home/user/桌面/test/woyaoabng/out/jscss"
-jsPhysicalRootPath="/home/user/桌面/test/woyaoabng/woyaobang/Public/Home/js/"
-cssPhysicalRootPath="/home/user/桌面/test/woyaoabng/woyaobang/Public/Home/css/"
+outJsCssRoot="/home/user/桌面/test/test/out/"
+jsPhysicalRootPath="/home/user/桌面/test/test/test/Public/Home/js/"
+cssPhysicalRootPath="/home/user/桌面/test/test/test/Public/Home/css/"
 jsConstantName="__JS__"
 cssConstantName="__CSS__"
-webAppRoot="/home/user/桌面/test/woyaoabng/woyaobang/"
-outDirRoot="/home/user/桌面/test/woyaoabng/out/"
+jsConstantAliasPath="Public/Home/js/"
+cssConstantAliasPath="Public/Home/css/"
+webAppRoot="/home/user/桌面/test/test/test/"
+outDirRoot="/home/user/桌面/test/test/out/"
+#----------------------cinfig end
 
-arge="suffixs:${suffixs} globaJsMethod:${globaJsMethod} globaCssMethod:${globaCssMethod} versionLable:${versionLable} baseCssDomin:${baseCssDomin} baseJsDomin:${baseJsDomin} globaCsslPrefixPath:${globaCsslPrefixPath} globaJslPrefixPath:${globaJslPrefixPath} sourceEncoding:${sourceEncoding} clearPageComment:${clearPageComment} compressionCss:${compressionCss} compressionJs:${compressionJs} userCompressionSuffix:${userCompressionSuffix} excludesCss:${excludesCss} excludesJs:${excludesJs} outJsCssRoot:${outJsCssRoot} jsPhysicalRootPath:${jsPhysicalRootPath} cssPhysicalRootPath:${cssPhysicalRootPath} jsConstantName:${jsConstantName} cssConstantName:${cssConstantName} webAppRoot:${webAppRoot} outDirRoot:${outDirRoot} "
+arge="suffixs:${suffixs} globaJsMethod:${globaJsMethod} globaCssMethod:${globaCssMethod} versionLable:${versionLable} baseCssDomin:${baseCssDomin} baseJsDomin:${baseJsDomin} globaCsslPrefixPath:${globaCsslPrefixPath} globaJslPrefixPath:${globaJslPrefixPath} sourceEncoding:${sourceEncoding} clearPageComment:${clearPageComment} compressionCss:${compressionCss} compressionJs:${compressionJs} userCompressionSuffix:${userCompressionSuffix} excludesCss:${excludesCss} excludesJs:${excludesJs} outJsCssRoot:${outJsCssRoot} jsPhysicalRootPath:${jsPhysicalRootPath} cssPhysicalRootPath:${cssPhysicalRootPath} jsConstantName:${jsConstantName} cssConstantName:${cssConstantName} webAppRoot:${webAppRoot} outDirRoot:${outDirRoot} jsConstantAliasPath:${jsConstantAliasPath} cssConstantAliasPath:${cssConstantAliasPath} "
 echo ${arge}
 
-#java -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y -Djava.ext.dirs=lib/ com.iqarr.maven.main.StartMain  $arge
-java  -classpath lib/jcv-maven-plugin-0.0.5.jar:lib/js-1.7R2.jar com.iqarr.maven.main.StartMain   $arge
+java $JAVA_DEBUG_OPTS  -classpath $CONF_DIR:$LIB_JARS com.iqarr.maven.main.StartMain   $arge

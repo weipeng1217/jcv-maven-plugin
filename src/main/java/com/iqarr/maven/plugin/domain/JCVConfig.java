@@ -504,6 +504,30 @@ public class JCVConfig {
 	public void setCssConstantAliasPath(String cssConstantAliasPath) {
 		this.cssConstantAliasPath = cssConstantAliasPath;
 	}
+	/*
+	* Title: toString  
+	* Description:   
+	* @return  
+	* @see java.lang.Object#toString()  
+	*/
+	
+	@Override
+	public String toString() {
+		return "JCVConfig [pageSuffixs=" + pageSuffixs + ", outDirRoot=" + outDirRoot + ", jsMethod=" + jsMethod
+		                + ", cssMethod=" + cssMethod + ", versionLable=" + versionLable + ", baseJsDomin=" + baseJsDomin
+		                + ", baseCssDomin=" + baseCssDomin + ", globaJslPrefixPath=" + globaJslPrefixPath
+		                + ", globaCsslPrefixPath=" + globaCsslPrefixPath + ", sourceEncoding=" + sourceEncoding
+		                + ", clearPageComment=" + clearPageComment + ", outJSCSSDirPath=" + outJSCSSDirPath
+		                + ", compressionCss=" + compressionCss + ", compressionJs=" + compressionJs
+		                + ", userCompressionSuffix=" + userCompressionSuffix + ", excludesJs=" + excludesJs
+		                + ", excludesCss=" + excludesCss + ", yuiConfig=" + yuiConfig + ", skipFileNameSuffix="
+		                + skipFileNameSuffix + ", jsPhysicalRootPath=" + jsPhysicalRootPath + ", cssPhysicalRootPath="
+		                + cssPhysicalRootPath + ", jsConstantName=" + jsConstantName + ", cssConstantName="
+		                + cssConstantName + ", webAppRoot=" + webAppRoot + ", jsConstantAliasPath="
+		                + jsConstantAliasPath + ", cssConstantAliasPath=" + cssConstantAliasPath + "]";
+	}
+	
+	
 	
 	
 	

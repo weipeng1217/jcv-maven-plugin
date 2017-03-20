@@ -74,9 +74,13 @@ public class StartMain {
 		 */
 		
 		LoggetFactory.setPrintStrear (System.out);
-		LoggetFactory.info ("arge lenth:" + args.length);
+		
+		
 		JCVConfig jcvConfig = new JCVConfig ();
 		processArge (args,jcvConfig);
+		LoggetFactory.info ("\n");
+		LoggetFactory.info ("config is:" + jcvConfig.toString ());
+		
 		ProcessFactory processFactory = new DefaultProcessFactory (jcvConfig);
 		processFactory.initDisplayInfo ();
 		processFactory.initJcv (jcvConfig.getWebAppRoot ());
@@ -183,12 +187,12 @@ public class StartMain {
 		}
 		jcvConfig.setUserCompressionSuffix (userCompressionSuffix);
 		String excludesCss = pars.get ("excludesCss");
-		if (null != excludesCss && "".equals (excludesCss)) {
+		if (null != excludesCss && !"".equals (excludesCss)) {
 			jcvConfig.setExcludesCss (Arrays.asList (excludesCss.split (",")));
 		}
 		
 		String excludesJs = pars.get ("excludesJs");
-		if (null != excludesJs && "".equals (excludesJs)) {
+		if (null != excludesJs && !"".equals (excludesJs)) {
 			jcvConfig.setExcludesJs (Arrays.asList (excludesJs.split (",")));
 		}
 		
