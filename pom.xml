@@ -4,7 +4,7 @@
 
 	<groupId>com.iqarr.maven.plugin</groupId>
 	<artifactId>jcv-maven-plugin</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6</version>
 	<packaging>maven-plugin</packaging>
 
 
