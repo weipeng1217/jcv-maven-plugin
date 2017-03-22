@@ -42,9 +42,13 @@ public class Md5Utils {
             while ((len = in.read(buffer, 0, 1024)) != -1) {  
                 digest.update(buffer, 0, len);  
             }  
-            in.close();  
+            
         } catch (IOException e) {  
             throw e;
+        }finally{
+        	if(null!=in){
+        		in.close();
+        	}
         }  
         BigInteger bigInt = new BigInteger(1, digest.digest());  
         return bigInt.toString(16);  

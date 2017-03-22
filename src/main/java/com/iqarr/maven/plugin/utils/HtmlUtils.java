@@ -114,6 +114,7 @@ public class HtmlUtils {
      * @param isCssFile css文件
      * @throws IOException
      */
+    @Deprecated
     public static void cleanBaseAllComments(StringBuffer sb, final String chars,final boolean isCssFile) throws IOException{
         char[] chas = sb.toString().toCharArray();
         int chasLenth=chas.length;

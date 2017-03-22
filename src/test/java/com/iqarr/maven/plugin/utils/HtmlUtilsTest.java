@@ -20,7 +20,6 @@ import org.junit.Test;
 * @version 
 *		V1.0      
 */
-@SuppressWarnings({"unused"})
 public class HtmlUtilsTest {
     
     /**
@@ -33,23 +32,13 @@ public class HtmlUtilsTest {
     }
     
     
-    /**
-     * Test method for {@link com.iqarr.maven.plugin.utils.HtmlUtils#cleanBaseComments(StringBuffer, String)}.
-     * @throws Exception 
-     */
-    @Test
-    public void testCleanBaseComments() throws Exception {
-       String readToStr = FileUtils.readToStr(new File(this.getClass().getClassLoader().getResource("demo.js").getPath()) , "utf-8");
-        
-        StringBuffer sb=new StringBuffer(readToStr);
-       // HtmlUtils.cleanBaseComments(sb, "utf-8");
-       
-    }
+  
     /**
      * Test method for {@link com.iqarr.maven.plugin.utils.HtmlUtils#cleanBase2Comments(StringBuffer, String)}.
      * @throws Exception 
      */
-    @Test
+    @SuppressWarnings("unused")
+	@Test
     public void testCleanBase2Comments() throws Exception {
         String readToStr = FileUtils.readToStr(new File(this.getClass().getClassLoader().getResource("demo.js").getPath()) , "utf-8");
         StringBuffer sb=new StringBuffer(readToStr);
