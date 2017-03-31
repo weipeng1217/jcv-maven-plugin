@@ -103,11 +103,15 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 					                && jCVConfig.getCssMethod () == JCVMethodEnum.MD5FileName_METHOD)
 					                || (JCVFileInfo.JS.equals (jcv.getFileType ())
 					                                && jCVConfig.getJsMethod () == JCVMethodEnum.MD5FileName_METHOD)) {
-						processFiles.get (i).setCopy (true);
+						//processFiles.get (i).setCopy (false);
+						processFiles.remove (i);
+						i--;
 					}
 					else {
 						processFiles.remove (i);
 						i--;
+						//processFiles.get (i).setCopy (true);
+						//i++;
 					}
 					isProcessFile.put (jcv,true);
 					continue;
@@ -569,7 +573,8 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 			String versionStr = "";
 			
 			if (JCVFileInfo.CSS.equals (jcvFileInfo.getFileType ())) {
-				if (!checkStrIsInList (jcvFileInfo.getRelativelyFilePath (),jCVConfig.getExcludesCss (),true)) {
+				//if (!checkStrIsInList (jcvFileInfo.getRelativelyFilePath (),jCVConfig.getExcludesCss (),true)) {
+				if(!checkJcvIsSkip(jcvFileInfo,jCVConfig)){
 					if (jCVConfig.isCompressionCss () == true) {
 						if ((jcvFileInfo.getFileName ().indexOf (jCVConfig.getSkipFileNameSuffix () + "."
 						                + jcvFileInfo.getFileType ()) != -1)) {
@@ -585,6 +590,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 							}
 							else {
 								LoggerFactory.warn (" not support method method:" + jCVConfig.getCssMethod ().name ());
+								return ;
 							}
 						}
 						else {
@@ -601,6 +607,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 							}
 							else {
 								LoggerFactory.warn (" not support method method:" + jCVConfig.getCssMethod ().name ());
+								return ;
 							}
 							isReplace = true;
 						}
@@ -619,17 +626,20 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 						}
 						else {
 							LoggerFactory.warn (" not support method method:" + jCVConfig.getCssMethod ().name ());
+							return ;
 						}
 					}
 				}
 				else {
 					
 					LoggerFactory.debug (" skip file :" + jcvFileInfo.getFileType ());
+					return ;
 					
 				}
 			}
 			else if (JCVFileInfo.JS.equals (jcvFileInfo.getFileType ())) {
-				if (!checkStrIsInList (jcvFileInfo.getRelativelyFilePath (),jCVConfig.getExcludesJs (),true)) {
+				//if (!checkStrIsInList (jcvFileInfo.getRelativelyFilePath (),jCVConfig.getExcludesJs (),true)) {
+				if(!checkJcvIsSkip(jcvFileInfo,jCVConfig)){
 					if (jCVConfig.isCompressionJs () == true) {
 						if ((jcvFileInfo.getFileName ().indexOf (jCVConfig.getSkipFileNameSuffix () + "."
 						                + jcvFileInfo.getFileType ()) != -1)) {
@@ -645,6 +655,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 							}
 							else {
 								LoggerFactory.warn (" not support method method:" + jCVConfig.getJsMethod ().name ());
+								return ;
 							}
 						}
 						else {
@@ -661,6 +672,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 							}
 							else {
 								LoggerFactory.warn (" not support method method:" + jCVConfig.getJsMethod ().name ());
+								return ;
 							}
 							isReplace = true;
 						}
@@ -680,6 +692,7 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 						else {
 							
 							LoggerFactory.warn (" not support method method:" + jCVConfig.getJsMethod ().name ());
+							return ;
 							
 						}
 					}
@@ -687,12 +700,14 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 				else {
 					
 					LoggerFactory.debug (" break file :" + jcvFileInfo.getFileType ());
+					return ;
 					
 				}
 			}
 			else {
 				
 				LoggerFactory.warn (" not support file type:" + jcvFileInfo.getFileType ());
+				return ;
 				
 			}
 			

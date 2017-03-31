@@ -150,8 +150,8 @@ public class JCVFileInfo {
     }
 
     /**
-     * 设置 文件是否被复制
-     * @param isCopy 文件是否被复制
+     * 设置 文件是否已被复制
+     * @param isCopy 文件是否已被复制
      */
     public void setCopy(boolean isCopy) {
         this.isCopy = isCopy;

@@ -247,14 +247,18 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
 	 */
 	private void processMd5FileCpoy( List<JCVFileInfo>  processSuccessFiles){
 		
+		if(jCVConfig.isCompressionCss () ==false && jCVConfig.isCompressionJs ()==false){
+			return;
+		}
+		
 		//复制MD5FileName_METHOD　文件
         if (jCVConfig.getCssMethod () == JCVMethodEnum.MD5FileName_METHOD || jCVConfig.getJsMethod () == JCVMethodEnum.MD5FileName_METHOD) {
            
             for (JCVFileInfo info : processSuccessFiles) {
-                if(jCVConfig.getCssMethod () == JCVMethodEnum.MD5FileName_METHOD && JCVFileInfo.CSS.equals(info.getFileType())){
+                if(jCVConfig.getCssMethod () == JCVMethodEnum.MD5FileName_METHOD && JCVFileInfo.CSS.equals(info.getFileType()) && jCVConfig.isCompressionCss ()==false){
                     copyMd5FileNameJssCss(info,jCVConfig.getOutJSCSSDirPath ());
                 }
-                if( jCVConfig.getJsMethod ()  == JCVMethodEnum.MD5FileName_METHOD && JCVFileInfo.JS.equals(info.getFileType())){
+                if( jCVConfig.getJsMethod ()  == JCVMethodEnum.MD5FileName_METHOD && JCVFileInfo.JS.equals(info.getFileType()) && jCVConfig.isCompressionJs ()==false ){
                     copyMd5FileNameJssCss(info,jCVConfig.getOutJSCSSDirPath ());
                 }
             }
@@ -275,9 +279,9 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
         if (jCVConfig.isCompressionJs () == true || jCVConfig.isCompressionCss () == true ||
         				jCVConfig.getCssMethod () == JCVMethodEnum.MD5FileName_METHOD || jCVConfig.getJsMethod ()==JCVMethodEnum.MD5FileName_METHOD ) {
             
-           
-            List<JCVFileInfo> copyFiles = new ArrayList<JCVFileInfo>();
-            Map<JCVFileInfo, String> processFilesMap = new HashMap<JCVFileInfo, String>();
+           final int size=processSuccessFiles.size ();
+            List<JCVFileInfo> copyFiles = new ArrayList<JCVFileInfo>(size);
+            Map<JCVFileInfo, String> processFilesMap = new HashMap<JCVFileInfo, String>( (int)((float)size/0.75F +1.00F) );
             for (JCVFileInfo info : processSuccessFiles) {
                 processFilesMap.put(info, "1");
             }
@@ -285,11 +289,14 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
             for (Entry<String, JCVFileInfo> map : jcvFiles.entrySet()) {
                 String string = processFilesMap.get(map.getValue());
                 if (string == null &&  map.getValue().isCopy()==false) {
-                    if(map.getValue().getFileType().equals(JCVFileInfo.CSS) && 
-                                    (jCVConfig.isCompressionCss ()==true ||  jCVConfig.getCssMethod ()== JCVMethodEnum.MD5FileName_METHOD )  ){
+                    if(map.getValue().getFileType().equals(JCVFileInfo.CSS) 
+                    				&&(jCVConfig.isCompressionCss ()==true ||  jCVConfig.getCssMethod ()== JCVMethodEnum.MD5FileName_METHOD )  ){
                         copyFiles.add(map.getValue());
-                    }else  if(map.getValue().getFileType().equals(JCVFileInfo.JS) && (jCVConfig.isCompressionJs ()==true || jCVConfig.getJsMethod ()==JCVMethodEnum.MD5FileName_METHOD)){
+                    }else  if(map.getValue().getFileType().equals(JCVFileInfo.JS) 
+                    				&& (jCVConfig.isCompressionJs ()==true || jCVConfig.getJsMethod ()==JCVMethodEnum.MD5FileName_METHOD)){
                         copyFiles.add(map.getValue());
+                    }else {
+                    	LoggerFactory.warn ("fiel type error :"+map.getValue().getFileType ());
                     }
                     
                     
@@ -300,6 +307,16 @@ public abstract class AbstractProcessFactory implements ProcessFactory {
                 copyFileJssCss(info,jCVConfig.getOutJSCSSDirPath ());
             }
             displayInfo.add (DISPLAY_STR+"copy untreated file file size: "+copyFiles.size ());
+        }else {
+        	//不是使用文件名md5方式,复制全部
+			for (Entry<String, JCVFileInfo> map : jcvFiles.entrySet ()) {
+				JCVFileInfo info = map.getValue ();
+				if (info == null) {
+					continue;
+				}
+				copyFileJssCss (info,jCVConfig.getOutJSCSSDirPath ());
+				
+			}
         }
 	}
 	
