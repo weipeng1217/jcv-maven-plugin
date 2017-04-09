@@ -11,8 +11,6 @@ import java.io.File;
 *	  V1.0
 * @author 
 *		zhangyong   
-* @date 
-*		2017/01/07-10:01:07
 * @version 
 *		V1.0      
 */

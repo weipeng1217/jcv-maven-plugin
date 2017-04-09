@@ -9,8 +9,6 @@ package com.iqarr.maven.plugin.constant;
 *	  V1.0
 * @author 
 *		zhangyong   
-* @date 
-*		2017/03/16-16:49:59
 * @version 
 *		V1.0      
 */

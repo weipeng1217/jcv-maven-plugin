@@ -24,8 +24,6 @@ import com.iqarr.maven.plugin.support.logger.SystemLogger;
  *        V1.0
  * @author
  *         zhangyong
- * @date
- *       2017/03/18-11:47:35
  * @version
  *          V1.0
  */

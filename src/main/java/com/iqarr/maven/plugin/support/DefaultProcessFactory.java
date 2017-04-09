@@ -37,7 +37,6 @@ import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
  * @Package 默认处理方式
  *          com.iqarr.maven.plugin.support
  * @ClassName:             DefaultProcessFactory
- * @date       2017/03/16-17:16:22
  */
 public class DefaultProcessFactory extends AbstractProcessFactory {
 	

@@ -8,8 +8,6 @@ package com.iqarr.maven.plugin.support.logger;
  *        V1.0
  * @author
  *         zhangyong
- * @date
- *       2017/03/16-16:17:58
  * @version
  *          V1.0
  */

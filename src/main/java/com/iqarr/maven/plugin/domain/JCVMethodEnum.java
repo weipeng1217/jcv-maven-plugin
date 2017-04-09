@@ -9,8 +9,6 @@ package com.iqarr.maven.plugin.domain;
  *        V1.0
  * @author
  *         zhangyong
- * @date
- *       2017/01/06-14:13:36
  * @version
  *          V1.0
  */

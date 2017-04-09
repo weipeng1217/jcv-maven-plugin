@@ -17,8 +17,6 @@ import org.junit.Test;
 *	  V1.0
 * @author 
 *		zhangyong   
-* @date 
-*		2017/01/12-09:41:11
 * @version 
 *		V1.0      
 */

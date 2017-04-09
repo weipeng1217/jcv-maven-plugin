@@ -17,8 +17,6 @@ import com.iqarr.maven.plugin.domain.JCVMethodEnum;
  *        V1.0
  * @author
  *         zhangyong
- * @date
- *       2017/01/17-14:42:11
  * @version
  *          V1.0
  */

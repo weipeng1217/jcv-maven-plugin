@@ -14,9 +14,7 @@ import java.security.MessageDigest;
 * @since 
 *	  V1.0
 * @author 
-*		zhangyong   
-* @date 
-*		2017/01/06-16:18:22
+*		zhangyong  
 * @version 
 *		V1.0      
 */

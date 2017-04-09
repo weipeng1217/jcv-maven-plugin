@@ -28,8 +28,6 @@ import com.iqarr.maven.plugin.utils.Md5Utils;
  *        V1.0
  * @author
  *         zhangyong
- * @date
- *       2017/03/16-15:47:04
  * @version
  *          V1.0
  */

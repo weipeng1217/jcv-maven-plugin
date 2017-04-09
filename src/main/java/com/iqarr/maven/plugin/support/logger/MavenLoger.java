@@ -11,8 +11,6 @@ import org.apache.maven.plugin.logging.Log;
  *        V1.0
  * @author
  *         zhangyong
- * @date
- *       2017/03/20-15:00:32
  * @version
  *          V1.0
  */

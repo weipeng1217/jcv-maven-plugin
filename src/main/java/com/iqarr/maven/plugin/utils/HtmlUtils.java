@@ -17,8 +17,6 @@ import com.iqarr.maven.plugin.domain.DocPosition;
 *	  V1.0
 * @author 
 *		zhangyong   
-* @date 
-*		2017/01/07-11:15:21
 * @version 
 *		V1.0      
 */

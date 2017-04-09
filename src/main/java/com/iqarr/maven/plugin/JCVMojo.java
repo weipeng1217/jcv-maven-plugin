@@ -27,9 +27,7 @@ import com.iqarr.maven.plugin.utils.FileUtils;
 * @since 
 *	  V1.0
 * @author 
-*		zhangyong   
-* @date 
-*		2017/01/06-10:34:34
+*		zhangyong  
 * @version 
 *		V1.0      
 */

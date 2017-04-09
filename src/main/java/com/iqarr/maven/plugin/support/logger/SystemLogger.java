@@ -12,8 +12,6 @@ import java.io.StringWriter;
  *        V1.0
  * @author
  *         zhangyong
- * @date
- *       2017/03/20-14:09:54
  * @version
  *          V1.0
  */

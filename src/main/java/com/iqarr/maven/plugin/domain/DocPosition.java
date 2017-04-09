@@ -8,7 +8,6 @@ package com.iqarr.maven.plugin.domain;
  * @since 	  V1.0
  * @Package 	 com.iqarr.maven.plugin.domain
  * @ClassName: 	 DocPosition  
- * @date 		2017/01/11-14:14:29
  */
 public class DocPosition {
     

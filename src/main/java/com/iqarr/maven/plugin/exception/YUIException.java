@@ -14,8 +14,6 @@ import com.iqarr.maven.plugin.support.logger.LoggerFactory;
 *	  V1.0
 * @author 
 *		zhangyong   
-* @date 
-*		2017/02/05-11:36:45
 * @version 
 *		V1.0      
 */
