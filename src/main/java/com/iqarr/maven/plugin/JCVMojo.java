@@ -58,14 +58,14 @@ public class JCVMojo extends AbstractMojo {
      * 基本的域名　script标签的src的前缀 
      * 该配置适合采用动静分离等方法，相对路径不需要配置
      */
-    @Parameter
+    @Parameter(defaultValue ="http://script.iqarr.com")
     private List<String> baseJsDomin;
     
     /**
      * 基本的域名　css 标签的link的前缀
      * 该配置适合采用动静分离等方法，相对路径不需要配置
      */
-    @Parameter
+    @Parameter(defaultValue ="http://style.iqarr.com")
     private List<String> baseCssDomin;
     
     /**
@@ -132,7 +132,7 @@ public class JCVMojo extends AbstractMojo {
     private List<String> excludesJs;
     
     /** 排除css文件(只支持全路径匹配)**/
-    @Parameter
+    @Parameter(defaultValue ="")
     private List<String> excludesCss;
     
     /** yui config**/
