@@ -812,6 +812,13 @@ public class DefaultProcessFactory extends AbstractProcessFactory {
 				}
 			}
 		}
+		
+		if(jCVConfig.getVersionValLenth()!=-1){
+		    if(versionStr.length()>jCVConfig.getVersionValLenth()){
+		        versionStr=versionStr.substring(0, jCVConfig.getVersionValLenth()-1<0?0:jCVConfig.getVersionValLenth()-1);
+		    }
+		}
+		
 		return versionStr;
 	}
 	

@@ -152,3 +152,7 @@
 28. `cssConstantAliasPath`
 
   * css (注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量输出目录
+  
+29. `versionValLenth`
+
+  * 版本号长度，该参数会截取版本号从第一位开始指定长度

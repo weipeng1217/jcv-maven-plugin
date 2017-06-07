@@ -143,6 +143,36 @@ public class JCVMojo extends AbstractMojo {
     @Parameter(defaultValue =".min")
     private String skipFileNameSuffix;
     
+    // version 6.0.1,兼容通用处理
+    
+    
+    /**
+     * js常量名称 jsConstantName/jspath
+     */
+    @Parameter
+    private String jsConstantName;
+    
+    /**
+     * css 常量名称  cssConstantName/csspath
+     */
+    @Parameter
+    private String cssConstantName;
+    
+    
+    /** js(注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量对应的输出目录**/
+    @Parameter
+    private String jsConstantAliasPath;
+    
+    /**  css (注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量输出目录**/
+    @Parameter
+    private String cssConstantAliasPath;
+    
+    /**
+     * 版本号长度
+     */
+    @Parameter(defaultValue ="-1")
+    private  int versionValLenth=-1;
+    
     /*
     * <p>Title: execute</p>  
     * <p>Description: </p>  
@@ -191,6 +221,27 @@ public class JCVMojo extends AbstractMojo {
         }
         jcvConfig.setYuiConfig (yuiConfig);
         jcvConfig.setSkipFileNameSuffix (skipFileNameSuffix);
+        
+        //version 6.1
+        if(null!=jsConstantName &&!"".equals(jsConstantName)){
+            jcvConfig.setJsConstantName(outJsCssRoot);
+        }
+        if(null!=cssConstantName &&!"".equals(cssConstantName)){
+            jcvConfig.setCssConstantName(outJsCssRoot);
+        }
+        
+        if(null!=jsConstantAliasPath &&!"".equals(jsConstantAliasPath)){
+            jcvConfig.setJsConstantAliasPath(jsConstantAliasPath);
+        }
+        
+        if(null!=cssConstantAliasPath && !"".equals(cssConstantAliasPath)){
+            jcvConfig.setCssConstantAliasPath(jsConstantAliasPath);
+        }
+        
+        if(-1!=versionValLenth){
+            jcvConfig.setVersionValLenth(versionValLenth);
+        }
+        
         String out= outputDirectory.getPath()+FileUtils.getSystemFileSeparator()+webRootName;
         jcvConfig.setOutDirRoot (out);
        ProcessFactory processFactory=new DefaultProcessFactory(jcvConfig);

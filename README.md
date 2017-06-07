@@ -106,6 +106,7 @@ mvn clean package
 5. 插件不会在eclipse中生效，在package后才会生效
 6. 注意在使用md5文件名的时候请注意排除一些js动态加载css,如果修改了文件名会导致无法加载到css,因此需要排除掉，目前已知有`kindeditor`,`layer`,`My97DatePicker`
 7. js css文件编码必须utf-8
+8. jdk version >=1.7 ,对于需要支持1.6的版本可以自己编译安装到本地仓库就可以
 
 ### 参数说明
 

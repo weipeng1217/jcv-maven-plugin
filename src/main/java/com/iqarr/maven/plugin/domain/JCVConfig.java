@@ -136,6 +136,11 @@ public class JCVConfig {
 	/**  css (注意该目录不是全路径，该路径是指在outJssCssPath+this) 常量输出目录**/
 	private String cssConstantAliasPath;
 	
+	/**
+	 * 版本号长度
+	 */
+	private  int versionValLenth=-1;
+	
 	//===============================================================================================
 	
 	/**
@@ -502,6 +507,9 @@ public class JCVConfig {
 	public void setCssConstantAliasPath(String cssConstantAliasPath) {
 		this.cssConstantAliasPath = cssConstantAliasPath;
 	}
+	
+	
+	
 	/*
 	* Title: toString  
 	* Description:   
@@ -509,7 +517,21 @@ public class JCVConfig {
 	* @see java.lang.Object#toString()  
 	*/
 	
-	@Override
+	/**
+     * 获取 版本号长度 
+     * @return versionValLenth
+     */
+    public int getVersionValLenth() {
+        return versionValLenth;
+    }
+    /**
+     * 设置 版本号长度
+     * @param versionValLenth 版本号长度
+     */
+    public void setVersionValLenth(int versionValLenth) {
+        this.versionValLenth = versionValLenth;
+    }
+    @Override
 	public String toString() {
 		return "JCVConfig [pageSuffixs=" + pageSuffixs + ", outDirRoot=" + outDirRoot + ", jsMethod=" + jsMethod
 		                + ", cssMethod=" + cssMethod + ", versionLable=" + versionLable + ", baseJsDomin=" + baseJsDomin
