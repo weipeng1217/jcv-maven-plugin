@@ -224,10 +224,10 @@ public class JCVMojo extends AbstractMojo {
         
         //version 6.1
         if(null!=jsConstantName &&!"".equals(jsConstantName)){
-            jcvConfig.setJsConstantName(outJsCssRoot);
+            jcvConfig.setJsConstantName(jsConstantName);
         }
         if(null!=cssConstantName &&!"".equals(cssConstantName)){
-            jcvConfig.setCssConstantName(outJsCssRoot);
+            jcvConfig.setCssConstantName(cssConstantName);
         }
         
         if(null!=jsConstantAliasPath &&!"".equals(jsConstantAliasPath)){
@@ -235,7 +235,7 @@ public class JCVMojo extends AbstractMojo {
         }
         
         if(null!=cssConstantAliasPath && !"".equals(cssConstantAliasPath)){
-            jcvConfig.setCssConstantAliasPath(jsConstantAliasPath);
+            jcvConfig.setCssConstantAliasPath(cssConstantAliasPath);
         }
         
         if(-1!=versionValLenth){
