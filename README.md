@@ -21,7 +21,7 @@
 <plugin>
 	<groupId>com.iqarr.maven.plugin</groupId>
 	<artifactId>jcv-maven-plugin</artifactId>
-	<version>0.0.6</version>
+	<version>1.0.0</version>
 		<executions>
 			<execution>
 			<id>process</id>
