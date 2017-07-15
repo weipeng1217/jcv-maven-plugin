@@ -90,6 +90,9 @@ mvn clean package
 
 ### 新版本特性
 
+`version 1.0.0`
+  1. 支持截取指定长度的version.
+  
 `version 0.0.6`
   1. 优化整个压缩流程.
   2. 修复部分bug
